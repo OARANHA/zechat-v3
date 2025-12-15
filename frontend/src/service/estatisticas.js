@@ -2,7 +2,7 @@ import request from 'src/service/request'
 
 export function ConsultarTicketsQueuesService (params) {
   return request({
-    url: '/dash-tickets-queues',
+    url: '/statistics/dash-tickets-queues',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function ConsultarTicketsQueuesService (params) {
 
 export function RelatorioContatos (params) {
   return request({
-    url: '/contacts-report',
+    url: '/statistics/contacts-report',
     method: 'get',
     params
   })
@@ -18,7 +18,7 @@ export function RelatorioContatos (params) {
 
 export function RelatorioResumoAtendimentosUsuarios (params) {
   return request({
-    url: '/statistics-per-users',
+    url: '/statistics/statistics-per-users',
     method: 'get',
     params
   })

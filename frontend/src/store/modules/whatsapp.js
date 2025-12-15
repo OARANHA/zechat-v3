@@ -4,9 +4,10 @@ const whatsapp = {
   },
   mutations: {
     LOAD_WHATSAPPS (state, payload) {
-      state.whatsApps = payload
+      state.whatsApps = Array.isArray(payload) ? payload : []
     },
     UPDATE_WHATSAPPS (state, payload) {
+      if (!payload) return
       const whatsApp = payload
       let newWhats = [...state.whatsApps]
       const whatsAppIndex = newWhats.findIndex(s => s.id === whatsApp.id)
@@ -18,6 +19,7 @@ const whatsapp = {
       state.whatsApps = [...newWhats]
     },
     UPDATE_SESSION (state, payload) {
+      if (!payload) return
       const whatsApp = payload
       const whatsAppIndex = state.whatsApps.findIndex(s => s.id === whatsApp.id)
 
@@ -26,18 +28,15 @@ const whatsapp = {
         state.whatsApps[whatsAppIndex].updatedAt = whatsApp.updatedAt
         state.whatsApps[whatsAppIndex].qrcode = whatsApp.qrcode
         state.whatsApps[whatsAppIndex].retries = whatsApp.retries
-        return state.whatsApps
-      } else {
-        return state.whatsApps
       }
     },
     DELETE_WHATSAPPS (state, payload) {
+      if (!payload) return
       const whatsAppId = payload
       const whatsAppIndex = state.whatsApps.findIndex(s => s.id === whatsAppId)
       if (whatsAppIndex !== -1) {
         state.whatsApps.splice(whatsAppIndex, 1)
       }
-      return state.whatsApps
     },
     RESET_WHATSAPPS (state) {
       state.whatsApps = []

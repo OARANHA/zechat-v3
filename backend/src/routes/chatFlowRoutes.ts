@@ -5,11 +5,11 @@ import * as ChatFlowController from "../controllers/ChatFlowController";
 
 const chatFlowRoutes = express.Router();
 
-chatFlowRoutes.post("/chat-flow", isAuth, ChatFlowController.store);
-chatFlowRoutes.get("/chat-flow", isAuth, ChatFlowController.index);
-chatFlowRoutes.put("/chat-flow/:chatFlowId", isAuth, ChatFlowController.update);
+chatFlowRoutes.post("/", isAuth, ChatFlowController.store);
+chatFlowRoutes.get("/", isAuth, ChatFlowController.index);
+chatFlowRoutes.put("/:chatFlowId", isAuth, ChatFlowController.update);
 chatFlowRoutes.delete(
-  "/chat-flow/:chatFlowId",
+  "/:chatFlowId",
   isAuth,
   ChatFlowController.remove
 );

@@ -2,50 +2,52 @@ import express from "express";
 import multer from "multer";
 import isAuth from "../middleware/isAuth";
 
+import uploadConfig from "../config/upload";
 import * as ContactController from "../controllers/ContactController";
 import * as ImportPhoneContactsController from "../controllers/ImportPhoneContactsController";
-import uploadConfig from "../config/upload";
 
 const upload = multer(uploadConfig);
-
 const contactRoutes = express.Router();
 
+// prefixo /contacts vem do index.ts
+
 contactRoutes.post(
-  "/contacts/import",
+  "/import",
   isAuth,
   ImportPhoneContactsController.store
 );
 
 contactRoutes.post(
-  "/contacts/upload",
+  "/upload",
   isAuth,
   upload.array("file"),
   ContactController.upload
 );
 
 contactRoutes.post(
-  "/contacts/export",
+  "/export",
   isAuth,
   ContactController.exportContacts
 );
 
-contactRoutes.get("/contacts", isAuth, ContactController.index);
+contactRoutes.get("/", isAuth, ContactController.index);
 
-contactRoutes.get("/contacts/:contactId", isAuth, ContactController.show);
+contactRoutes.get("/:contactId", isAuth, ContactController.show);
 
-contactRoutes.post("/contacts", isAuth, ContactController.store);
+contactRoutes.post("/", isAuth, ContactController.store);
 
-contactRoutes.post("/contacts/sync", isAuth, ContactController.syncContacts);
+contactRoutes.post("/sync", isAuth, ContactController.syncContacts);
 
-contactRoutes.put("/contacts/:contactId", isAuth, ContactController.update);
+contactRoutes.put("/:contactId", isAuth, ContactController.update);
 
-contactRoutes.delete("/contacts/:contactId", isAuth, ContactController.remove);
+contactRoutes.delete("/:contactId", isAuth, ContactController.remove);
 
 contactRoutes.put(
   "/contact-tags/:contactId",
   isAuth,
   ContactController.updateContactTags
 );
+
 contactRoutes.put(
   "/contact-wallet/:contactId",
   isAuth,

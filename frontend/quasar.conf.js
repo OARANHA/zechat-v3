@@ -85,8 +85,8 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      // port: 8080,
-      open: true, // opens browser window automatically
+      port: 3000,
+      open: false, // ✅ CORRIGIDO: não abre navegador no container Docker
       // https://webpack.js.org/configuration/dev-server/#devserver-headers
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -94,36 +94,46 @@ module.exports = function (ctx) {
         'Access-Control-Allow-Headers': 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'
       },
       proxy: {
+        '/api': {
+          target: process.env.VUE_APP_API_URL || 'http://backend:3100', // ✅ CORRIGIDO
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+          logLevel: 'debug',
+          pathRewrite: {
+            '^/api': '/api'
+          }
+        },
         '/statistics': {
-          target: process.env.VUE_URL_API || 'http://localhost:8080',
+          target: process.env.VUE_APP_API_URL || 'http://backend:3100', // ✅ CORRIGIDO
           changeOrigin: true,
           secure: false,
           ws: true,
           logLevel: 'debug'
         },
         '/dash-tickets-queues': {
-          target: process.env.VUE_URL_API || 'http://localhost:8080',
+          target: process.env.VUE_APP_API_URL || 'http://backend:3100', // ✅ CORRIGIDO
           changeOrigin: true,
           secure: false,
           ws: true,
           logLevel: 'debug'
         },
         '/contacts-report': {
-          target: process.env.VUE_URL_API || 'http://localhost:8080',
+          target: process.env.VUE_APP_API_URL || 'http://backend:3100', // ✅ CORRIGIDO
           changeOrigin: true,
           secure: false,
           ws: true,
           logLevel: 'debug'
         },
         '/auth': {
-          target: process.env.VUE_URL_API || 'http://localhost:8080',
+          target: process.env.VUE_APP_API_URL || 'http://backend:3100', // ✅ CORRIGIDO
           changeOrigin: true,
           secure: false,
           ws: true,
           logLevel: 'debug'
         },
         '/socket.io': {
-          target: process.env.VUE_URL_API || 'http://localhost:8080',
+          target: process.env.VUE_APP_API_URL || 'http://backend:3100', // ✅ CORRIGIDO
           changeOrigin: true,
           secure: false,
           ws: true,
@@ -170,7 +180,7 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: { maximumFileSizeToCacheInBytes: 5000000 }, // only for GenerateSW
       manifest: {
-        name: 'Zaap Web',
+        name: '28Web - Bot Multi-atendimento',
         short_name: 'WhatsApp',
         description: 'Bot Multi-atendimento para whatsapp',
         display: 'standalone',

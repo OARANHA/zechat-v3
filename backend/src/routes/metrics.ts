@@ -4,6 +4,6 @@ import MetricsController from '../controllers/MetricsController';
 const metricsRouter = Router();
 const metricsController = new MetricsController();
 
-metricsRouter.get('/metrics', metricsController.index);
+metricsRouter.get('/', metricsController.index);
 
 export default metricsRouter;

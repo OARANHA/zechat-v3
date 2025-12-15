@@ -15,7 +15,7 @@ RUN npx @quasar/cli --help 2>&1 | head -10 || echo "@quasar/cli not found" && \
     echo "Scripts:" && cat package.json | grep -A5 '"scripts"'
 
 EXPOSE 3000
-CMD ["npx", "quasar", "dev", "-m", "pwa", "--host", "0.0.0.0"]
+CMD ["npx", "quasar", "dev", "-m", "pwa", "--host", "0.0.0.0", "--port", "3000"]
 
 # Builder stage
 FROM node:18-alpine AS builder

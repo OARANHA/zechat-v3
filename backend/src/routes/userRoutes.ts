@@ -1,20 +1,46 @@
 import { Router } from "express";
 
-import isAuth from "../middleware/isAuth";
 import * as UserController from "../controllers/UserController";
+import isAuth from "../middleware/isAuth";
 
 const userRoutes = Router();
 
-userRoutes.get("/users", isAuth, UserController.index);
+// prefixo /users já vem de routes.use('/users', userRoutes)
 
-userRoutes.post("/users", isAuth, UserController.store);
+userRoutes.get(
+  "/",
+  isAuth,
+  UserController.index
+);
 
-userRoutes.put("/users/:userId", isAuth, UserController.update);
+userRoutes.post(
+  "/",
+  isAuth,
+  UserController.store
+);
 
-userRoutes.put("/users/:userId/configs", isAuth, UserController.updateConfigs);
+userRoutes.put(
+  "/:userId",
+  isAuth,
+  UserController.update
+);
 
-userRoutes.get("/users/:userId", isAuth, UserController.show);
+userRoutes.put(
+  "/:userId/configs",
+  isAuth,
+  UserController.updateConfigs
+);
 
-userRoutes.delete("/users/:userId", isAuth, UserController.remove);
+userRoutes.get(
+  "/:userId",
+  isAuth,
+  UserController.show
+);
+
+userRoutes.delete(
+  "/:userId",
+  isAuth,
+  UserController.remove
+);
 
 export default userRoutes;

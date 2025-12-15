@@ -5,15 +5,15 @@ import * as FastReplyController from "../controllers/FastReplyController";
 
 const fastReplyRoutes = express.Router();
 
-fastReplyRoutes.post("/fastreply", isAuth, FastReplyController.store);
-fastReplyRoutes.get("/fastreply", isAuth, FastReplyController.index);
+fastReplyRoutes.post("/", isAuth, FastReplyController.store);
+fastReplyRoutes.get("/", isAuth, FastReplyController.index);
 fastReplyRoutes.put(
-  "/fastreply/:fastReplyId",
+  "/:fastReplyId",
   isAuth,
   FastReplyController.update
 );
 fastReplyRoutes.delete(
-  "/fastreply/:fastReplyId",
+  "/:fastReplyId",
   isAuth,
   FastReplyController.remove
 );

@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
-import isAuth from "../middleware/isAuth";
 import uploadConfig from "../config/upload";
+import isAuth from "../middleware/isAuth";
 
 import * as CampaignController from "../controllers/CampaignController";
 
@@ -9,32 +9,32 @@ const campaignsRoutes = express.Router();
 const upload = multer(uploadConfig);
 
 campaignsRoutes.post(
-  "/campaigns",
+  "/",
   isAuth,
   upload.array("medias"),
   CampaignController.store
 );
-campaignsRoutes.get("/campaigns", isAuth, CampaignController.index);
+campaignsRoutes.get("/", isAuth, CampaignController.index);
 campaignsRoutes.put(
-  "/campaigns/:campaignId",
+  "/:campaignId",
   isAuth,
   upload.array("medias"),
   CampaignController.update
 );
 campaignsRoutes.delete(
-  "/campaigns/:campaignId",
+  "/:campaignId",
   isAuth,
   CampaignController.remove
 );
 
 campaignsRoutes.post(
-  "/campaigns/start/:campaignId",
+  "/start/:campaignId",
   isAuth,
   CampaignController.startCampaign
 );
 
 campaignsRoutes.post(
-  "/campaigns/cancel/:campaignId",
+  "/cancel/:campaignId",
   isAuth,
   CampaignController.cancelCampaign
 );

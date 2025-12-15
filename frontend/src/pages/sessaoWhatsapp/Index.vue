@@ -361,8 +361,19 @@ export default {
       this.loading = false
     },
     async listarWhatsapps () {
-      const { data } = await ListarWhatsapps()
-      this.$store.commit('LOAD_WHATSAPPS', data)
+      try {
+        const { data } = await ListarWhatsapps()
+        // ✅ VALIDAÇÃO: garante que data seja um array
+        if (data && Array.isArray(data)) {
+          this.$store.commit('LOAD_WHATSAPPS', data)
+        } else {
+          console.warn('Dados de WhatsApp inválidos:', data)
+          this.$store.commit('LOAD_WHATSAPPS', [])
+        }
+      } catch (error) {
+        console.error('Erro ao listar WhatsApps:', error)
+        this.$store.commit('LOAD_WHATSAPPS', [])
+      }
     },
     async deleteWhatsapp (whatsapp) {
       this.$q.dialog({

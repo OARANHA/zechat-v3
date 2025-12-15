@@ -59,90 +59,78 @@
             @click="getDashData"
           />
         </div>
-
       </q-card-section>
     </q-card>
+
     <q-card class="q-my-md q-pa-sm">
       <q-card-section class="q-pa-md">
         <div class="row q-gutter-md justify-center">
           <div class="col-xs-12 col-sm-shrink">
-            <q-card
-              flat
-              bordered
-              class="my-card full-height"
-              style="min-width: 200px"
-            >
-              <q-card-section class="text-center ">
-                <p class="text-h4 text-bold text-center"> {{ ticketsAndTimes.qtd_total_atendimentos }} </p>
+            <q-card flat bordered class="my-card full-height" style="min-width: 200px">
+              <q-card-section class="text-center">
+                <p class="text-h4 text-bold text-center">
+                  {{ ticketsAndTimes.qtd_total_atendimentos }}
+                </p>
                 Total Atendimentos
               </q-card-section>
             </q-card>
           </div>
+
           <div class="col-xs-12 col-sm-shrink">
-            <q-card
-              flat
-              bordered
-              class="my-card full-height"
-              style="min-width: 200px"
-            >
+            <q-card flat bordered class="my-card full-height" style="min-width: 200px">
               <q-card-section class="text-center">
-                <p class="text-h4 text-bold text-center"> {{ ticketsAndTimes.qtd_demanda_ativa }} </p>
+                <p class="text-h4 text-bold text-center">
+                  {{ ticketsAndTimes.qtd_demanda_ativa }}
+                </p>
                 Ativo
               </q-card-section>
             </q-card>
           </div>
+
           <div class="col-xs-12 col-sm-shrink">
-            <q-card
-              flat
-              bordered
-              class="my-card full-height"
-              style="min-width: 200px"
-            >
+            <q-card flat bordered class="my-card full-height" style="min-width: 200px">
               <q-card-section class="text-center">
-                <p class="text-h4 text-bold text-center"> {{ ticketsAndTimes.qtd_demanda_receptiva }} </p>
+                <p class="text-h4 text-bold text-center">
+                  {{ ticketsAndTimes.qtd_demanda_receptiva }}
+                </p>
                 Receptivo
               </q-card-section>
             </q-card>
           </div>
+
           <div class="col-xs-12 col-sm-shrink">
-            <q-card
-              flat
-              bordered
-              class="my-card full-height"
-              style="min-width: 200px"
-            >
+            <q-card flat bordered class="my-card full-height" style="min-width: 200px">
               <q-card-section class="text-center">
-                <p class="text-h4 text-bold text-center"> {{ ticketsAndTimes.new_contacts }} </p>
+                <p class="text-h4 text-bold text-center">
+                  {{ ticketsAndTimes.new_contacts }}
+                </p>
                 Novos Contatos
               </q-card-section>
             </q-card>
           </div>
+
           <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-            <q-card
-              flat
-              bordered
-              class="my-card full-height"
-            >
+            <q-card flat bordered class="my-card full-height">
               <q-card-section class="text-center">
-                <p class="text-h5 text-bold text-center"> {{ cTmaFormat }} </p>
+                <p class="text-h5 text-bold text-center">
+                  {{ cTmaFormat }}
+                </p>
                 Tempo Médio Atendimento (TMA)
               </q-card-section>
             </q-card>
           </div>
+
           <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-            <q-card
-              flat
-              bordered
-              class="my-card full-height"
-            >
+            <q-card flat bordered class="my-card full-height">
               <q-card-section class="text-center">
-                <p class="text-h5 text-bold text-center"> {{ cTmeFormat }} </p>
+                <p class="text-h5 text-bold text-center">
+                  {{ cTmeFormat }}
+                </p>
                 Tempo Médio 1º Resposta
               </q-card-section>
             </q-card>
           </div>
         </div>
-
       </q-card-section>
     </q-card>
 
@@ -151,7 +139,6 @@
         <q-card>
           <q-card-section class="q-pa-md">
             <ApexChart
-              ref="ChartTicketsChannels"
               type="donut"
               height="300"
               width="100%"
@@ -161,11 +148,11 @@
           </q-card-section>
         </q-card>
       </div>
+
       <div class="col-xs-12 col-sm-6">
         <q-card>
           <q-card-section class="q-pa-md">
             <ApexChart
-              ref="ChartTicketsQueue"
               type="donut"
               height="300"
               width="100%"
@@ -176,10 +163,10 @@
         </q-card>
       </div>
     </div>
+
     <q-card class="q-my-md">
       <q-card-section>
         <ApexChart
-          ref="ChartTicketsEvolutionChannels"
           type="bar"
           height="300"
           width="100%"
@@ -188,12 +175,13 @@
         />
       </q-card-section>
     </q-card>
+
     <q-card class="q-my-md">
       <q-card-section class="q-pa-md">
         <ApexChart
-          ref="ChartTicketsEvolutionByPeriod"
           type="line"
           height="300"
+          width="100%"
           :options="ticketsEvolutionByPeriodOptions"
           :series="ticketsEvolutionByPeriodOptions.series"
         />
@@ -215,16 +203,17 @@
         >
           <template v-slot:body-cell-name="props">
             <q-td :props="props">
-              <div class="row col text-bold"> {{ props.row.name || 'Não informado' }} </div>
-              <div class="row col text-caption">{{ props.row.email }} </div>
+              <div class="row col text-bold">
+                {{ props.row.name || 'Não informado' }}
+              </div>
+              <div class="row col text-caption">
+                {{ props.row.email }}
+              </div>
             </q-td>
           </template>
         </q-table>
-
       </q-card-section>
-
     </q-card>
-
   </div>
 </template>
 
@@ -247,7 +236,7 @@ export default {
   components: { ApexChart },
   data () {
     return {
-      confiWidth: {
+      configWidth: {
         horizontal: false,
         width: this.$q.screen.width
       },
@@ -264,7 +253,6 @@ export default {
       filas: [],
       ticketsChannels: [],
       ticketsChannelsOptions: {
-        // colors: ['#008FFB', '#00E396', '#FEB019'],
         animations: {
           enabled: true,
           easing: 'easeinout',
@@ -305,8 +293,8 @@ export default {
             fontFamily: undefined
           }
         },
-        series: [],
-        labels: [],
+        series: [0],
+        labels: ['Carregando...'],
         theme: {
           mode: 'light',
           palette: 'palette1'
@@ -331,7 +319,6 @@ export default {
       },
       ticketsQueue: [],
       ticketsQueueOptions: {
-        // colors: ['#008FFB', '#00E396', '#FEB019'],
         animations: {
           enabled: true,
           easing: 'easeinout',
@@ -354,17 +341,6 @@ export default {
             show: true
           }
         },
-        // responsive: [{
-        //   breakpoint: 480,
-        //   options: {
-        //     chart: {
-        //       width: 250
-        //     },
-        //     legend: {
-        //       position: 'bottom'
-        //     }
-        //   }
-        // }],
         legend: {
           position: 'bottom'
         },
@@ -383,8 +359,8 @@ export default {
             fontFamily: undefined
           }
         },
-        series: [],
-        labels: [],
+        series: [0],
+        labels: ['Carregando...'],
         theme: {
           mode: 'light',
           palette: 'palette1'
@@ -409,7 +385,6 @@ export default {
       },
       ticketsEvolutionChannels: [],
       ticketsEvolutionChannelsOptions: {
-        // colors: ['#008FFB', '#00E396', '#FEB019'],
         animations: {
           enabled: true,
           easing: 'easeinout',
@@ -417,7 +392,6 @@ export default {
         },
         chart: {
           type: 'bar',
-          // height: 300,
           stacked: true,
           stackType: '100%',
           toolbar: {
@@ -428,9 +402,8 @@ export default {
               zoomin: false,
               zoomout: false,
               pan: false,
-              reset: false | '<img src="/static/icons/reset.png" width="20">'
+              reset: false
             }
-
           }
         },
         theme: {
@@ -463,35 +436,10 @@ export default {
         stroke: {
           width: 0
         },
-        // responsive: [{
-        //   breakpoint: 480,
-        //   options: {
-        //     chart: {
-        //       width: 250
-        //     },
-        //     legend: {
-        //       position: 'bottom'
-        //     }
-        //   }
-        // }],
         xaxis: {
           type: 'category',
           categories: [],
           tickPlacement: 'on'
-          // labels: {
-          //   formatter: function (value, timestamp, opts) {
-          //     return format(new Date(timestamp), 'dd/MM')
-          //     // return opts.dateFormatter().format('dd MMM')
-          //   }
-          // }
-          // type: 'datetime'
-          // format: 'dd/MM'
-          // datetimeFormatter: {
-          //   // year: 'yyyy',
-          //   month: 'MM',
-          //   day: 'DD'
-          //   // hour: 'HH:mm',
-          // }
         },
         yaxis: {
           title: {
@@ -507,11 +455,14 @@ export default {
               return Number(val).toFixed(0)
             }
           }
-        }
+        },
+        series: [{
+          name: 'Carregando...',
+          data: [0]
+        }]
       },
       ticketsEvolutionByPeriod: [],
       ticketsEvolutionByPeriodOptions: {
-        // colors: ['#008FFB', '#00E396', '#FEB019'],
         animations: {
           enabled: true,
           easing: 'easeinout',
@@ -530,9 +481,8 @@ export default {
               zoomin: false,
               zoomout: false,
               pan: false,
-              reset: false | '<img src="/static/icons/reset.png" width="20">'
+              reset: false
             }
-
           }
         },
         grid: {
@@ -588,14 +538,24 @@ export default {
         },
         legend: {
           show: false
-        }
+        },
+        series: [{
+          name: 'Carregando...',
+          type: 'column',
+          data: [0]
+        },
+        {
+          type: 'line',
+          data: [0]
+        }]
       },
       ticketsAndTimes: {
-        qtd_total_atendimentos: null,
-        qtd_demanda_ativa: null,
-        qtd_demanda_receptiva: null,
+        qtd_total_atendimentos: 0,
+        qtd_demanda_ativa: 0,
+        qtd_demanda_receptiva: 0,
         tma: null,
-        tme: null
+        tme: null,
+        new_contacts: 0
       },
       ticketsPerUsersDetail: [],
       TicketsPerUsersDetailColumn: [
@@ -635,9 +595,7 @@ export default {
           field: 'tme',
           align: 'center',
           headerStyle: 'text-align: center !important',
-          format: v => {
-            return formatDuration(v) || ''
-          }
+          format: v => formatDuration(v || {}) || ''
         },
         {
           name: 'tma',
@@ -645,20 +603,16 @@ export default {
           field: 'tma',
           align: 'center',
           headerStyle: 'text-align: center !important',
-          format: v => {
-            return formatDuration(v) || ''
-          }
+          format: v => formatDuration(v || {}) || ''
         }
       ]
     }
   },
   watch: {
     '$q.dark.isActive' () {
-      // necessário para carregar os gráficos com a alterçaão do mode (dark/light)
       this.$router.go()
     },
     '$q.screen.width' () {
-      // necessário para carregar os gráficos com a alterçaão do mode (dark/light)
       this.setConfigWidth()
     }
   },
@@ -674,8 +628,13 @@ export default {
   },
   methods: {
     async listarFilas () {
-      const { data } = await ListarFilas()
-      this.filas = data
+      try {
+        const { data } = await ListarFilas()
+        this.filas = Array.isArray(data) ? data : []
+      } catch (e) {
+        console.error(e)
+        this.filas = []
+      }
     },
     setConfigWidth () {
       const diffDays = differenceInDays(new Date(this.params.endDate), new Date(this.params.startDate))
@@ -683,148 +642,239 @@ export default {
         this.configWidth = { horizontal: true, width: 2200 }
       } else {
         const actualWidth = this.$q.screen.width
-        this.configWidth = { horizontal: true, width: actualWidth - (actualWidth < 768 ? 40 : 100) }
+        this.configWidth = {
+          horizontal: true,
+          width: actualWidth - (actualWidth < 768 ? 40 : 100)
+        }
       }
     },
     getDashTicketsAndTimes () {
-      GetDashTicketsAndTimes(this.params).then(res => {
-        this.ticketsAndTimes = res.data[0]
-      })
+      GetDashTicketsAndTimes(this.params)
+        .then(res => {
+          const dados = Array.isArray(res.data) ? res.data : []
+          this.ticketsAndTimes = dados[0] || {
+            qtd_total_atendimentos: 0,
+            qtd_demanda_ativa: 0,
+            qtd_demanda_receptiva: 0,
+            tma: null,
+            tme: null,
+            new_contacts: 0
+          }
+        })
         .catch(err => {
           console.error(err)
+          this.ticketsAndTimes = {
+            qtd_total_atendimentos: 0,
+            qtd_demanda_ativa: 0,
+            qtd_demanda_receptiva: 0,
+            tma: null,
+            tme: null,
+            new_contacts: 0
+          }
         })
     },
     getDashTicketsQueue () {
-      GetDashTicketsQueue(this.params).then(res => {
-        this.ticketsQueue = res.data || []
-        const series = []
-        const labels = []
-        if (Array.isArray(this.ticketsQueue) && this.ticketsQueue.length > 0) {
-          this.ticketsQueue.forEach(e => {
-            series.push(+e.qtd || 0)
-            labels.push(e.label || 'Sem label')
-          })
-        }
-        this.ticketsQueueOptions.series = series
-        this.ticketsQueueOptions.labels = labels
-        if (this.$refs.ChartTicketsQueue) {
-          this.$refs.ChartTicketsQueue.updateOptions(this.ticketsQueueOptions)
-          this.$refs.ChartTicketsQueue.updateSeries(series, true)
-        }
-      })
+      GetDashTicketsQueue(this.params)
+        .then(res => {
+          const dados = Array.isArray(res.data) ? res.data : []
+          let series = []
+          let labels = []
+
+          if (dados.length > 0) {
+            dados.forEach(e => {
+              series.push(+e.qtd || 0)
+              labels.push(e.label || 'Sem label')
+            })
+          } else {
+            series = [0]
+            labels = ['Sem dados']
+          }
+
+          this.ticketsQueueOptions = {
+            ...this.ticketsQueueOptions,
+            series: series && series.length > 0 ? series : [0],
+            labels: labels && labels.length > 0 ? labels : ['Sem dados']
+          }
+        })
         .catch(err => {
           console.error(err)
-          this.ticketsQueueOptions.series = []
-          this.ticketsQueueOptions.labels = []
+          this.ticketsQueueOptions = {
+            ...this.ticketsQueueOptions,
+            series: [0],
+            labels: ['Erro ao carregar']
+          }
         })
     },
     getDashTicketsChannels () {
-      GetDashTicketsChannels(this.params).then(res => {
-        this.ticketsChannels = res.data || []
-        const series = []
-        const labels = []
-        if (Array.isArray(this.ticketsChannels) && this.ticketsChannels.length > 0) {
-          this.ticketsChannels.forEach(e => {
-            series.push(+e.qtd || 0)
-            labels.push(e.label || 'Sem label')
-          })
-        }
-        this.ticketsChannelsOptions.series = series
-        this.ticketsChannelsOptions.labels = labels
-        if (this.$refs.ChartTicketsChannels) {
-          this.$refs.ChartTicketsChannels.updateOptions(this.ticketsChannelsOptions)
-          this.$refs.ChartTicketsChannels.updateSeries(series, true)
-        }
-      })
+      GetDashTicketsChannels(this.params)
+        .then(res => {
+          const dados = Array.isArray(res.data) ? res.data : []
+          let series = []
+          let labels = []
+
+          if (dados.length > 0) {
+            dados.forEach(e => {
+              series.push(+e.qtd || 0)
+              labels.push(e.label || 'Sem label')
+            })
+          } else {
+            series = [0]
+            labels = ['Sem dados']
+          }
+
+          this.ticketsChannelsOptions = {
+            ...this.ticketsChannelsOptions,
+            series: series && series.length > 0 ? series : [0],
+            labels: labels && labels.length > 0 ? labels : ['Sem dados']
+          }
+        })
         .catch(err => {
           console.error(err)
-          this.ticketsChannelsOptions.series = []
-          this.ticketsChannelsOptions.labels = []
+          this.ticketsChannelsOptions = {
+            ...this.ticketsChannelsOptions,
+            series: [0],
+            labels: ['Erro ao carregar']
+          }
         })
     },
     getDashTicketsEvolutionChannels () {
       GetDashTicketsEvolutionChannels(this.params)
         .then(res => {
-          this.ticketsEvolutionChannels = res.data || []
-          if (!Array.isArray(this.ticketsEvolutionChannels) || this.ticketsEvolutionChannels.length === 0) {
-            this.ticketsEvolutionChannelsOptions.series = []
-            this.ticketsEvolutionChannelsOptions.labels = []
-            this.ticketsEvolutionChannelsOptions.xaxis.categories = []
+          const dados = Array.isArray(res.data) ? res.data : []
+          if (!dados.length) {
+            this.ticketsEvolutionChannelsOptions = {
+              ...this.ticketsEvolutionChannelsOptions,
+              series: [{
+                name: 'Sem dados',
+                data: [0]
+              }],
+              labels: ['Sem dados'],
+              xaxis: {
+                ...this.ticketsEvolutionChannelsOptions.xaxis,
+                categories: ['Sem dados']
+              }
+            }
             return
           }
-          const dataLabel = groupBy({ ...this.ticketsEvolutionChannels }, 'dt_referencia')
+
+          const dataLabel = groupBy(dados, 'dt_referencia')
           const labels = Object.keys(dataLabel)
-          // .map(l => {
-          //   return format(new Date(l), 'dd/MM')
-          // })
-          this.ticketsEvolutionChannelsOptions.labels = labels
-          this.ticketsEvolutionChannelsOptions.xaxis.categories = labels
-          const series = []
-          const dados = groupBy({ ...this.ticketsEvolutionChannels }, 'label')
-          for (const item in dados) {
-            series.push({
-              name: item,
-              // type: 'line',
-              data: dados[item].map(d => {
-                // if (labels.includes(format(new Date(d.dt_ref), 'dd/MM'))) {
-                return d.qtd || 0
-              })
-            })
+
+          const agrupadoPorLabel = groupBy(dados, 'label')
+          let series = Object.keys(agrupadoPorLabel).map(chave => ({
+            name: chave,
+            data: agrupadoPorLabel[chave].map(d => d.qtd || 0)
+          }))
+
+          if (!series.length) {
+            series = [{
+              name: 'Sem dados',
+              data: [0]
+            }]
           }
-          this.ticketsEvolutionChannelsOptions.series = series
-          if (this.$refs.ChartTicketsEvolutionChannels) {
-            this.$refs.ChartTicketsEvolutionChannels.updateOptions(this.ticketsEvolutionChannelsOptions)
-            this.$refs.ChartTicketsEvolutionChannels.updateSeries(series, true)
+
+          this.ticketsEvolutionChannelsOptions = {
+            ...this.ticketsEvolutionChannelsOptions,
+            series,
+            labels: labels && labels.length > 0 ? labels : ['Sem dados'],
+            xaxis: {
+              ...this.ticketsEvolutionChannelsOptions.xaxis,
+              categories: labels && labels.length > 0 ? labels : ['Sem dados']
+            }
           }
         })
         .catch(error => {
           console.error(error)
-          this.ticketsEvolutionChannelsOptions.series = []
-          this.ticketsEvolutionChannelsOptions.labels = []
-          this.ticketsEvolutionChannelsOptions.xaxis.categories = []
+          this.ticketsEvolutionChannelsOptions = {
+            ...this.ticketsEvolutionChannelsOptions,
+            series: [{
+              name: 'Erro',
+              data: [0]
+            }],
+            labels: ['Erro ao carregar'],
+            xaxis: {
+              ...this.ticketsEvolutionChannelsOptions.xaxis,
+              categories: ['Erro ao carregar']
+            }
+          }
         })
     },
     getDashTicketsEvolutionByPeriod () {
       GetDashTicketsEvolutionByPeriod(this.params)
         .then(res => {
-          this.ticketsEvolutionByPeriod = res.data || []
-          const series = [{
-            name: 'Atendimentos',
-            type: 'column',
-            data: []
-          }, {
-            type: 'line',
-            data: []
-          }
+          const dados = Array.isArray(res.data) ? res.data : []
+          let labels = []
+          const series = [
+            {
+              name: 'Atendimentos',
+              type: 'column',
+              data: []
+            },
+            {
+              type: 'line',
+              data: []
+            }
           ]
-          const labels = []
-          if (Array.isArray(this.ticketsEvolutionByPeriod) && this.ticketsEvolutionByPeriod.length > 0) {
-            this.ticketsEvolutionByPeriod.forEach(e => {
+
+          if (dados.length > 0) {
+            dados.forEach(e => {
               series[0].data.push(+e.qtd || 0)
               labels.push(e.label || 'Sem label')
             })
+            series[1].data = [...series[0].data]
+          } else {
+            series[0].data = [0]
+            series[1].data = [0]
+            labels = ['Sem dados']
           }
-          series[1].data = series[0].data
-          this.ticketsEvolutionByPeriodOptions.labels = labels
-          this.ticketsEvolutionByPeriodOptions.series = series
-          if (this.$refs.ChartTicketsEvolutionByPeriod) {
-            this.$refs.ChartTicketsEvolutionByPeriod.updateOptions(this.ticketsEvolutionByPeriodOptions)
-            this.$refs.ChartTicketsEvolutionByPeriod.updateSeries(series, true)
+
+          this.ticketsEvolutionByPeriodOptions = {
+            ...this.ticketsEvolutionByPeriodOptions,
+            labels: labels && labels.length > 0 ? labels : ['Sem dados'],
+            series: series && series.length > 0 ? series : [{
+              name: 'Atendimentos',
+              type: 'column',
+              data: [0]
+            },
+            {
+              type: 'line',
+              data: [0]
+            }],
+            xaxis: {
+              ...this.ticketsEvolutionByPeriodOptions.xaxis,
+              categories: labels && labels.length > 0 ? labels : ['Sem dados']
+            }
           }
         })
         .catch(error => {
           console.error(error)
-          this.ticketsEvolutionByPeriodOptions.series = []
-          this.ticketsEvolutionByPeriodOptions.labels = []
+          this.ticketsEvolutionByPeriodOptions = {
+            ...this.ticketsEvolutionByPeriodOptions,
+            series: [{
+              name: 'Atendimentos',
+              type: 'column',
+              data: [0]
+            },
+            {
+              type: 'line',
+              data: [0]
+            }],
+            labels: ['Erro ao carregar'],
+            xaxis: {
+              ...this.ticketsEvolutionByPeriodOptions.xaxis,
+              categories: ['Erro ao carregar']
+            }
+          }
         })
     },
     getDashTicketsPerUsersDetail () {
       GetDashTicketsPerUsersDetail(this.params)
         .then(res => {
-          this.ticketsPerUsersDetail = res.data
+          this.ticketsPerUsersDetail = Array.isArray(res.data) ? res.data : []
         })
         .catch(error => {
           console.error(error)
+          this.ticketsPerUsersDetail = []
         })
     },
     getDashData () {
@@ -836,7 +886,6 @@ export default {
       this.getDashTicketsEvolutionByPeriod()
       this.getDashTicketsPerUsersDetail()
     }
-
   },
   beforeMount () {
     const mode = this.$q.dark.isActive ? 'dark' : 'light'
@@ -849,7 +898,6 @@ export default {
         shadeTo: mode,
         shadeIntensity: 0.95
       }
-
     }
     this.ticketsQueueOptions = { ...this.ticketsQueueOptions, theme }
     this.ticketsChannelsOptions = { ...this.ticketsChannelsOptions, theme }
@@ -863,7 +911,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .apexcharts-theme-dark svg {
   background: none !important;
 }

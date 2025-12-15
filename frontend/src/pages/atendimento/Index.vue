@@ -356,6 +356,7 @@
             >
               <template v-for="item in whatsapps">
                 <q-btn
+                  v-if="item && item.status"
                   rounded
                   flat
                   dense
@@ -363,10 +364,8 @@
                   :key="item.id"
                   class="q-mx-xs q-pa-none"
                   :style="`opacity: ${item.status === 'CONNECTED' ? 1 : 0.2}`"
-                  :icon="`img:${item.type}-logo.png`"
+                  :icon="`img:${item.type || 'whatsapp'}-logo.png`"
                 >
-                  <!-- :color="item.status === 'CONNECTED' ? 'positive' : 'negative'"
-                  :icon-right="item.status === 'CONNECTED' ? 'mdi-check-all' : 'mdi-alert-circle-outline'" -->
                   <q-tooltip
                     max-height="300px"
                     content-class="bg-blue-1 text-body1 text-grey-9 hide-scrollbar"
@@ -473,7 +472,7 @@
               bordered
               flat
             >
-              <q-card-section class="text-bold q-pa-sm ">
+              <q-card-section class="text-bold q-pa-sm">
                 <q-btn
                   flat
                   class="bg-padrao btn-rounded"
@@ -745,7 +744,7 @@
               <q-timeline
                 color="black"
                 style="width: 360px"
-                class="q-pl-sm "
+                class="q-pl-sm"
                 :class="{ 'text-black': !$q.dark.isActive }"
               >
                 <template v-for="(log, idx) in logsTicket">
@@ -1023,8 +1022,19 @@ export default {
       localStorage.setItem('filasCadastradas', JSON.stringify(data || []))
     },
     async listarWhatsapps () {
-      const { data } = await ListarWhatsapps()
-      this.$store.commit('LOAD_WHATSAPPS', data)
+      try {
+        const { data } = await ListarWhatsapps()
+        // ✅ VALIDAÇÃO: garante que data seja um array
+        if (data && Array.isArray(data)) {
+          this.$store.commit('LOAD_WHATSAPPS', data)
+        } else {
+          console.warn('Dados de WhatsApp inválidos:', data)
+          this.$store.commit('LOAD_WHATSAPPS', [])
+        }
+      } catch (error) {
+        console.error('Erro ao listar WhatsApps:', error)
+        this.$store.commit('LOAD_WHATSAPPS', [])
+      }
     },
     async listarEtiquetas () {
       const { data } = await ListarEtiquetas(true)
@@ -1178,7 +1188,7 @@ export default {
   destroyed () {
     this.$root.$off('handlerNotifications', this.handlerNotifications)
     this.$root.$off('infor-cabecalo-chat:acao-menu', this.setValueMenu)
-    this.$root.$on('update-ticket:info-contato', this.setValueMenuContact)
+    this.$root.$off('update-ticket:info-contato', this.setValueMenuContact)
     // this.socketDisconnect()
     this.$store.commit('TICKET_FOCADO', {})
   }

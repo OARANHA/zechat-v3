@@ -1,13 +1,14 @@
+import * as Sentry from "@sentry/node";
+import expressInstance, { NextFunction, Request, Response } from "express";
 import { readFileSync } from "fs";
 import moment from "moment";
-import expressInstance, { Request, Response, NextFunction } from "express";
-import * as Sentry from "@sentry/node";
-import routes from "../routes";
 import uploadConfig from "../config/upload";
 import AppError from "../errors/AppError";
+import routes from "../routes";
 import { logger } from "../utils/logger";
 
 export default async function modules(app): Promise<void> {
+  console.log('Iniciando módulos...');
   const { version } = JSON.parse(readFileSync("./package.json").toString());
   const started = new Date();
   const { env } = process;
@@ -42,7 +43,9 @@ export default async function modules(app): Promise<void> {
 
   app.use("/public", expressInstance.static(uploadConfig.directory));
 
-  app.use(routes);
+  console.log('Registrando rotas...');
+  app.use('/', routes);
+  console.log('Rotas registradas com sucesso!');
   app.use(Sentry.Handlers.errorHandler());
 
   // error handle
