@@ -26,9 +26,35 @@ const ShowBusinessHoursAndMessageService = async ({
 
   console.log('🔍 DEBUG: Dados do tenant:', tenant);
 
-  // A query SELECT retorna um array de objetos, mas como estamos usando QueryTypes.SELECT
-  // e esperamos apenas um resultado, o Sequelize já retorna o objeto diretamente
-  return tenant;
+  // Normaliza para sempre retornar 7 dias (Dom → Sáb)
+  const defaultDays = [
+    { day: 0, label: 'Domingo' },
+    { day: 1, label: 'Segunda-Feira' },
+    { day: 2, label: 'Terça-Feira' },
+    { day: 3, label: 'Quarta-Feira' },
+    { day: 4, label: 'Quinta-Feira' },
+    { day: 5, label: 'Sexta-Feira' },
+    { day: 6, label: 'Sábado' }
+  ];
+
+  let businessHours: any[] = Array.isArray((tenant as any)?.businessHours)
+    ? (tenant as any).businessHours
+    : [];
+  const byDay = Object.fromEntries(businessHours.map((d: any) => [Number(d.day), d]));
+  const normalized = defaultDays.map(d => {
+    const existing = byDay[d.day];
+    return {
+      day: d.day,
+      label: d.label,
+      type: existing?.type || 'O',
+      hr1: existing?.hr1 || '08:00',
+      hr2: existing?.hr2 || '12:00',
+      hr3: existing?.hr3 || '14:00',
+      hr4: existing?.hr4 || '18:00'
+    }
+  });
+
+  return { businessHours: normalized, messageBusinessHours: (tenant as any)?.messageBusinessHours || '' };
 };
 
 export default ShowBusinessHoursAndMessageService;
