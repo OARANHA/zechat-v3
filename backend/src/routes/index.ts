@@ -26,40 +26,54 @@ import userRoutes from './userRoutes';
 import whatsappRoutes from './whatsappRoutes';
 import whatsappSessionRoutes from './whatsappSessionRoutes';
 import whatsappWebhookRoutes from './whatsappWebhookRoutes';
+import billingRoutes from './billingRoutes';
+import tenantPlanRoutes from './tenantPlanRoutes';
+import erpIntegrationRoutes from './erpIntegrationRoutes';
+import erpWebhookRoutes from './erpWebhookRoutes';
+import subscriptionRoutes from './subscriptionRoutes';
 
 const routes = Router();
 
-// Health check já está no modules.ts
+// ========== AUTH ==========
+routes.use('/api/auth', authRoutes);
 
-// Auth routes
-routes.use('/auth', authRoutes);
+// ========== API INTERNA (/api/...) ==========
+routes.use('/api/users', userRoutes);
+routes.use('/api/tickets', ticketRoutes);
+routes.use('/api/whatsapp', whatsappRoutes);
+routes.use('/api/settings', settingRoutes);
+routes.use('/api/queue', queueRoutes);
+routes.use('/api/contacts', contactRoutes);
+routes.use('/api/messages', messageRoutes);
+routes.use('/api/tags', tagRoutes);
+routes.use('/api/fast-reply', fastReplyRoutes);
+routes.use('/api/campaigns', campaignRoutes);
+routes.use('/api/campaign-contacts', campaignContactsRoutes);
+routes.use('/api/auto-reply', autoReplyRoutes);
+routes.use('/api/chat-flow', chatFlowRoutes);
+routes.use('/api/hub-webhooks', hubWebhookRoutes);
+routes.use('/api/hub-messages', hubMessageRoutes);
+routes.use('/api/hub-channels', hubChannelRoutes);
+routes.use('/api/whatsapp-sessions', whatsappSessionRoutes);
+routes.use('/api/whatsapp-webhooks', whatsappWebhookRoutes);
+routes.use('/api/api-config', apiConfigRoutes);
+routes.use('/api/admin', adminRoutes);
+routes.use('/api/tenants', tenantRoutes);
+routes.use('/api/statistics', statisticsRoutes);
+routes.use('/api/contact-sync', contactSyncRoutes);
+routes.use('/api/facebook', facebookRoutes);
+routes.use('/api/metrics', metricsRouter);
+routes.use('/api/billing', billingRoutes);
+routes.use('/api/tenant-plan', tenantPlanRoutes);
+// ========== WEBHOOKS ==========
+routes.use('/webhook/erp', erpWebhookRoutes);
 
-// API routes
-routes.use('/users', userRoutes);
-routes.use('/tickets', ticketRoutes);
-routes.use('/whatsapp', whatsappRoutes);
-routes.use('/settings', settingRoutes);
-routes.use('/queue', queueRoutes);
-routes.use('/contacts', contactRoutes);
-routes.use('/messages', messageRoutes);
-routes.use('/api', tagRoutes);
-routes.use('/fast-reply', fastReplyRoutes);
-routes.use('/campaigns', campaignRoutes);
-routes.use('/campaign-contacts', campaignContactsRoutes);
-routes.use('/auto-reply', autoReplyRoutes);
-routes.use('/chat-flow', chatFlowRoutes);
-routes.use('/hub-webhooks', hubWebhookRoutes);
-routes.use('/hub-messages', hubMessageRoutes);
-routes.use('/hub-channels', hubChannelRoutes);
-routes.use('/whatsapp-sessions', whatsappSessionRoutes);
-routes.use('/whatsapp-webhooks', whatsappWebhookRoutes);
-routes.use('/api-config', apiConfigRoutes);
-routes.use('/api-external', apiExternalRoutes);
-routes.use('/admin', adminRoutes);
-routes.use('/tenants', tenantRoutes);
-routes.use('/statistics', statisticsRoutes);
-routes.use('/contact-sync', contactSyncRoutes);
-routes.use('/facebook', facebookRoutes);
-routes.use('/metrics', metricsRouter);
+// ========== INTEGRAÇÕES E ASSINATURAS ==========
+routes.use('/api/integrations/erp', erpIntegrationRoutes);
+routes.use('/api/subscriptions', subscriptionRoutes);
+
+// ========== API EXTERNA (pública) ==========
+// mantém os caminhos completos /v1/api/external/...
+routes.use('/', apiExternalRoutes);
 
 export default routes;

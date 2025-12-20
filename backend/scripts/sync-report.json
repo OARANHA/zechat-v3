@@ -1,0 +1,1222 @@
+{
+  "timestamp": "2025-12-18T10:41:05.565Z",
+  "summary": {
+    "totalModels": 34,
+    "totalMigrations": 45,
+    "modelsWithoutMigration": 0
+  },
+  "modelsWithoutMigration": [],
+  "detailedAnalysis": [
+    {
+      "model": "ApiConfig",
+      "tableName": "ApiConfigs",
+      "hasMigration": true,
+      "migrationFile": "20210308174543-create-table-ApiConfigs.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "UUID"
+          },
+          {
+            "name": "sessionId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "STRING"
+          },
+          {
+            "name": "isActive",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "token",
+            "type": "STRING"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tenantId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "urlServiceStatus",
+            "type": "TEXT"
+          },
+          {
+            "name": "urlMessageStatus",
+            "type": "TEXT"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "ApiMessage",
+      "tableName": "ApiMessages",
+      "hasMigration": true,
+      "migrationFile": "20210309200505-create-table-ApiMessages.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "UUID"
+          },
+          {
+            "name": "messageId",
+            "type": "STRING"
+          },
+          {
+            "name": "externalKey",
+            "type": "STRING"
+          },
+          {
+            "name": "body",
+            "type": "TEXT"
+          },
+          {
+            "name": "ack",
+            "type": "INTEGER"
+          },
+          {
+            "name": "number",
+            "type": "STRING"
+          },
+          {
+            "name": "mediaName",
+            "type": "TEXT"
+          },
+          {
+            "name": "timestamp",
+            "type": "INTEGER"
+          },
+          {
+            "name": "sessionId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tenantId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "messageWA",
+            "type": "JSONB"
+          },
+          {
+            "name": "apiConfig",
+            "type": "JSONB"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "AutoReply",
+      "tableName": "AutoReplys",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-autoreplys.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "celularTeste",
+            "type": "TEXT"
+          }
+        ]
+      }
+    },
+    {
+      "model": "AutoReplyLogs",
+      "tableName": "AutoReplyLogss",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-autoreplylogss.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": []
+      }
+    },
+    {
+      "model": "Campaign",
+      "tableName": "Campaigns",
+      "hasMigration": true,
+      "migrationFile": "20210227000928-create-table-campaign.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "mediaType",
+            "type": "UNKNOWN"
+          }
+        ],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "STRING"
+          },
+          {
+            "name": "start",
+            "type": "DATE"
+          },
+          {
+            "name": "status",
+            "type": "STRING"
+          },
+          {
+            "name": "sessionId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "message1",
+            "type": "TEXT"
+          },
+          {
+            "name": "message2",
+            "type": "TEXT"
+          },
+          {
+            "name": "message3",
+            "type": "TEXT"
+          },
+          {
+            "name": "mediaUrl",
+            "type": "STRING"
+          },
+          {
+            "name": "mediaType",
+            "type": "STRING"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tenantId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "CampaignContacts",
+      "tableName": "CampaignContactss",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-campaigncontactss.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": []
+      }
+    },
+    {
+      "model": "ChatFlow",
+      "tableName": "ChatFlows",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-chatflows.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "celularTeste",
+            "type": "TEXT"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Contact",
+      "tableName": "Contacts",
+      "hasMigration": true,
+      "migrationFile": "20200717144403-create-contacts.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "STRING"
+          },
+          {
+            "name": "number",
+            "type": "STRING"
+          },
+          {
+            "name": "profilePicUrl",
+            "type": "STRING"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "ContactCustomField",
+      "tableName": "ContactCustomFields",
+      "hasMigration": true,
+      "migrationFile": "20200723200315-create-contacts-custom-fields.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "STRING"
+          },
+          {
+            "name": "value",
+            "type": "STRING"
+          },
+          {
+            "name": "contactId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "ContactTag",
+      "tableName": "ContactTags",
+      "hasMigration": true,
+      "migrationFile": "20210220004040-create-table-tags-contact.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tagId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "contactId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tenantId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "ContactWallet",
+      "tableName": "ContactWallets",
+      "hasMigration": true,
+      "migrationFile": "20210727193355-create-table-wallets-contact.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "walletId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "contactId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tenantId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "ERPProvider",
+      "tableName": "ErpProviders",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-erpproviders.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "active",
+            "type": "UNKNOWN"
+          }
+        ],
+        "migration": [
+          {
+            "name": "apiKey",
+            "type": "TEXT"
+          },
+          {
+            "name": "webhookSecret",
+            "type": "TEXT"
+          },
+          {
+            "name": "webhookUrl",
+            "type": "STRING"
+          },
+          {
+            "name": "errorMessage",
+            "type": "TEXT"
+          },
+          {
+            "name": "lastSync",
+            "type": "DATE"
+          },
+          {
+            "name": "config",
+            "type": "JSON"
+          }
+        ]
+      }
+    },
+    {
+      "model": "ERPWebhookLog",
+      "tableName": "erp_webhook_logs",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-erp_webhook_logs.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "byProvider",
+            "type": "UNKNOWN"
+          }
+        ],
+        "migration": [
+          {
+            "name": "externalId",
+            "type": "TEXT"
+          },
+          {
+            "name": "processed",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "processingError",
+            "type": "TEXT"
+          },
+          {
+            "name": "processedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "FastReply",
+      "tableName": "FastReplys",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-fastreplys.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": []
+      }
+    },
+    {
+      "model": "LogTicket",
+      "tableName": "LogTickets",
+      "hasMigration": true,
+      "migrationFile": "20210815021807-create-table-LogTickets.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "ticketId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "queueId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "type",
+            "type": "STRING"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Message",
+      "tableName": "Messages",
+      "hasMigration": true,
+      "migrationFile": "20200717151645-create-messages.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "STRING"
+          },
+          {
+            "name": "body",
+            "type": "TEXT"
+          },
+          {
+            "name": "ack",
+            "type": "INTEGER"
+          },
+          {
+            "name": "read",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "mediaType",
+            "type": "STRING"
+          },
+          {
+            "name": "mediaUrl",
+            "type": "STRING"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "ticketId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "MessagesOffLine",
+      "tableName": "MessagesOffLines",
+      "hasMigration": true,
+      "migrationFile": "20251218085210-create-table-messagesofflines.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "ack",
+            "type": "INTEGER"
+          },
+          {
+            "name": "read",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "fromMe",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "body",
+            "type": "TEXT"
+          },
+          {
+            "name": "mediaName",
+            "type": "VIRTUAL"
+          },
+          {
+            "name": "mediaUrl",
+            "type": "STRING"
+          },
+          {
+            "name": "mediaType",
+            "type": "STRING"
+          },
+          {
+            "name": "isDeleted",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          },
+          {
+            "name": "quotedMsgId",
+            "type": "STRING"
+          },
+          {
+            "name": "ticketId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "contactId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Permission",
+      "tableName": "Permissions",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-permissions.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "active",
+            "type": "UNKNOWN"
+          }
+        ],
+        "migration": [
+          {
+            "name": "conditions",
+            "type": "TEXT"
+          },
+          {
+            "name": "metadata",
+            "type": "JSON"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Plan",
+      "tableName": "Plans",
+      "hasMigration": true,
+      "migrationFile": "20250101000001-create-table-plans.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "STRING"
+          },
+          {
+            "name": "price",
+            "type": "DECIMAL"
+          },
+          {
+            "name": "limits",
+            "type": "JSONB"
+          },
+          {
+            "name": "features",
+            "type": "JSONB"
+          },
+          {
+            "name": "status",
+            "type": "STRING"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          },
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tenantId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "planId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "status",
+            "type": "STRING"
+          },
+          {
+            "name": "subscriptionId",
+            "type": "STRING"
+          },
+          {
+            "name": "currentPeriodStart",
+            "type": "DATE"
+          },
+          {
+            "name": "currentPeriodEnd",
+            "type": "DATE"
+          },
+          {
+            "name": "cancelAtPeriodEnd",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Queue",
+      "tableName": "Queues",
+      "hasMigration": true,
+      "migrationFile": "20201207215725-create-table-queues.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "queue",
+            "type": "STRING"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Role",
+      "tableName": "Roles",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-roles.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "active",
+            "type": "UNKNOWN"
+          }
+        ],
+        "migration": [
+          {
+            "name": "description",
+            "type": "TEXT"
+          },
+          {
+            "name": "isDefault",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "metadata",
+            "type": "JSON"
+          }
+        ]
+      }
+    },
+    {
+      "model": "RolePermission",
+      "tableName": "RolePermissions",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-rolepermissions.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "byRole",
+            "type": "UNKNOWN"
+          },
+          {
+            "name": "Getter",
+            "type": "INTEGER"
+          }
+        ],
+        "migration": [
+          {
+            "name": "assignedBy",
+            "type": "INTEGER"
+          },
+          {
+            "name": "expiresAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Setting",
+      "tableName": "Settings",
+      "hasMigration": true,
+      "migrationFile": "20200903215941-create-settings.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "key",
+            "type": "STRING"
+          },
+          {
+            "name": "value",
+            "type": "TEXT"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "StepsReply",
+      "tableName": "StepsReplys",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-stepsreplys.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "initialStep",
+            "type": "BOOLEAN"
+          }
+        ]
+      }
+    },
+    {
+      "model": "StepsReplyActions",
+      "tableName": "StepsReplyActionss",
+      "hasMigration": true,
+      "migrationFile": "20251218085211-create-table-stepsreplyactionss.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "stepReplyId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "words",
+            "type": "STRING"
+          },
+          {
+            "name": "replyDefinition",
+            "type": "TEXT"
+          },
+          {
+            "name": "action",
+            "type": "INTEGER"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "queueId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "userIdDestination",
+            "type": "INTEGER"
+          },
+          {
+            "name": "nextStepId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Subscription",
+      "tableName": "Subscriptions",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-subscriptions.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "active",
+            "type": "UNKNOWN"
+          },
+          {
+            "name": "Getter",
+            "type": "DECIMAL"
+          }
+        ],
+        "migration": [
+          {
+            "name": "erpProviderId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "externalInvoiceId",
+            "type": "TEXT"
+          },
+          {
+            "name": "autoRenew",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "paidAt",
+            "type": "DATE"
+          },
+          {
+            "name": "canceledAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Tags",
+      "tableName": "Tagss",
+      "hasMigration": true,
+      "migrationFile": "20251218085212-create-table-tagss.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tag",
+            "type": "STRING"
+          },
+          {
+            "name": "color",
+            "type": "STRING"
+          },
+          {
+            "name": "isActive",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "tenantId",
+            "type": "INTEGER"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Tenant",
+      "tableName": "Tenants",
+      "hasMigration": true,
+      "migrationFile": "20201220234957-create-table-tenant.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "Getter",
+            "type": "INTEGER"
+          }
+        ],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "status",
+            "type": "STRING"
+          },
+          {
+            "name": "ownerId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "Ticket",
+      "tableName": "Tickets",
+      "hasMigration": true,
+      "migrationFile": "20200717145643-create-tickets.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "status",
+            "type": "STRING"
+          },
+          {
+            "name": "lastMessage",
+            "type": "STRING"
+          },
+          {
+            "name": "contactId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "userId",
+            "type": "INTEGER"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "User",
+      "tableName": "Users",
+      "hasMigration": true,
+      "migrationFile": "20200717133438-create-users.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "configs",
+            "type": "JSON"
+          }
+        ],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "STRING"
+          },
+          {
+            "name": "email",
+            "type": "STRING"
+          },
+          {
+            "name": "passwordHash",
+            "type": "STRING"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    },
+    {
+      "model": "UserMessagesLog",
+      "tableName": "UserMessagesLogs",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-usermessageslogs.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": []
+      }
+    },
+    {
+      "model": "UserRole",
+      "tableName": "UserRoles",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-userroles.ts",
+      "columnsComparison": {
+        "model": [
+          {
+            "name": "active",
+            "type": "UNKNOWN"
+          },
+          {
+            "name": "Getter",
+            "type": "INTEGER"
+          }
+        ],
+        "migration": [
+          {
+            "name": "assignedBy",
+            "type": "INTEGER"
+          },
+          {
+            "name": "expiresAt",
+            "type": "DATE"
+          },
+          {
+            "name": "isDefault",
+            "type": "BOOLEAN"
+          }
+        ]
+      }
+    },
+    {
+      "model": "UsersQueues",
+      "tableName": "UsersQueuess",
+      "hasMigration": true,
+      "migrationFile": "20251218085106-create-table-usersqueuess.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": []
+      }
+    },
+    {
+      "model": "Whatsapp",
+      "tableName": "Whatsapps",
+      "hasMigration": true,
+      "migrationFile": "20200717170223-create-whatsapps.ts",
+      "columnsComparison": {
+        "model": [],
+        "migration": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "session",
+            "type": "TEXT"
+          },
+          {
+            "name": "qrcode",
+            "type": "TEXT"
+          },
+          {
+            "name": "status",
+            "type": "STRING"
+          },
+          {
+            "name": "battery",
+            "type": "STRING"
+          },
+          {
+            "name": "plugged",
+            "type": "BOOLEAN"
+          },
+          {
+            "name": "createdAt",
+            "type": "DATE"
+          },
+          {
+            "name": "updatedAt",
+            "type": "DATE"
+          }
+        ]
+      }
+    }
+  ]
+}

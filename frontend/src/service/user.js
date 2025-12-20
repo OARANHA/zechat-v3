@@ -1,5 +1,12 @@
 import request from 'src/service/request'
 
+/**
+ * Serviços para usuários
+ * Backend:
+ * - routes.use('/api/users', userRoutes) - para usuários comuns
+ * - routes.use('/api/admin', adminRoutes) - para admin
+ */
+
 export function ListarUsuarios (params) {
   return request({
     url: '/users/',

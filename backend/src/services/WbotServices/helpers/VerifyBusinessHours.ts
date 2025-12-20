@@ -24,6 +24,11 @@ const verifyBusinessHours = async (
       tenantId: ticket.tenantId
     });
 
+    // Validar se businessHours existe antes de usar
+    if (!tenant.businessHours || tenant.businessHours.length === 0) {
+      return isBusinessHours;
+    }
+
     const dateMsg = fromUnixTime(msg.timestamp);
     const businessDay: any = tenant.businessHours.find(
       (d: any) => d.day === dateMsg.getDay()

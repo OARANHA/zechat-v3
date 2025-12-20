@@ -7,6 +7,25 @@ import * as DashController from "../controllers/Statistics/DashController";
 
 const statisticsRoutes = express.Router();
 
+/**
+ * Rotas de estatísticas.
+ *
+ * IMPORTANTE:
+ * - O prefixo completo vem de routes/index.ts:
+ *     routes.use('/api/statistics', statisticsRoutes)
+ *
+ * - Caminhos finais expostos pela API:
+ *     GET /api/statistics/dash-tickets-queues
+ *     GET /api/statistics/contacts-report
+ *     GET /api/statistics/statistics-per-users
+ *     GET /api/statistics/statistics-tickets-times
+ *     GET /api/statistics/statistics-tickets-channels
+ *     GET /api/statistics/statistics-tickets-evolution-channels
+ *     GET /api/statistics/statistics-tickets-evolution-by-period
+ *     GET /api/statistics/statistics-tickets-per-users-detail
+ *     GET /api/statistics/statistics-tickets-queue
+ */
+
 statisticsRoutes.get(
   "/dash-tickets-queues",
   isAuth,

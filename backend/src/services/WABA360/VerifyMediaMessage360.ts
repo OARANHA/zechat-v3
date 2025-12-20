@@ -1,6 +1,6 @@
 import Contact from "../../models/Contact";
 import Ticket from "../../models/Ticket";
-
+import { WabaMessage } from "../../@types";
 import Message from "../../models/Message";
 import CreateMessageService from "../MessageServices/CreateMessageService";
 import GetMediaWaba360 from "./GetMediaWaba360";

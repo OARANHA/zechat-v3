@@ -5,7 +5,21 @@ import isAuth from "../middleware/isAuth";
 
 const userRoutes = Router();
 
-// prefixo /users já vem de routes.use('/users', userRoutes)
+/**
+ * Rotas de usuários.
+ *
+ * IMPORTANTE:
+ * - O prefixo completo agora vem de routes/index.ts:
+ *   routes.use('/api/users', userRoutes)
+ *
+ * Ou seja, os caminhos finais são:
+ *   GET    /api/users
+ *   POST   /api/users
+ *   GET    /api/users/:userId
+ *   PUT    /api/users/:userId
+ *   PUT    /api/users/:userId/configs
+ *   DELETE /api/users/:userId
+ */
 
 userRoutes.get(
   "/",

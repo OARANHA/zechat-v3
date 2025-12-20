@@ -16,10 +16,16 @@ import {
   Default,
   HasMany,
   ForeignKey,
-  BelongsTo
+  BelongsTo,
+  Index,
+  Validate,
+  Scopes
 } from "sequelize-typescript";
 import Tenant from "./Tenant";
 
+/**
+ * Interface para limites de plano
+ */
 export interface PlanLimits {
   whatsappSessions: number;
   messagesPerMonth: number;
@@ -27,82 +33,130 @@ export interface PlanLimits {
   users: number;
 }
 
+/**
+ * Interface para features de plano
+ */
 export interface PlanFeatures {
   [key: string]: boolean | string | number;
 }
 
-@Table
+/**
+ * Tipos de status de plano
+ */
+export type PlanStatus = 'active' | 'inactive' | 'archived';
+
+/**
+ * Plan Model
+ * Planos de assinatura SaaS disponíveis para todos os tenants
+ */
+@Scopes(() => ({
+  active: {
+    where: { status: 'active' }
+  }
+}))
+@Table({
+  tableName: 'Plans',
+  timestamps: true,
+  underscored: false,
+  paranoid: false,
+  indexes: [
+    { fields: ['status'] }
+  ]
+})
 class Plan extends Model<Plan> {
   @PrimaryKey
   @AutoIncrement
-  @Column
-  id: number;
+  @Column(DataType.INTEGER)
+  id!: number;
 
-  @Column
-  name: string; // 'starter' | 'professional' | 'enterprise'
+  @Validate({ notEmpty: true })
+  @Column(DataType.STRING)
+  name!: string;
 
+  @Validate({ isDecimal: true })
   @Column(DataType.DECIMAL(10, 2))
-  price: number; // R$/mês
+  price!: number;
 
   @Column(DataType.JSONB)
-  limits: PlanLimits;
+  limits!: PlanLimits;
 
   @Column(DataType.JSONB)
-  features: PlanFeatures;
+  features!: PlanFeatures;
 
-  @Default("active")
-  @Column
-  status: string;
+  @Default('active')
+  @Column(DataType.ENUM('active', 'inactive', 'archived'))
+  status!: PlanStatus;
 
   @CreatedAt
-  createdAt: Date;
+  @Column(DataType.DATE)
+  createdAt!: Date;
 
   @UpdatedAt
-  updatedAt: Date;
+  @Column(DataType.DATE)
+  updatedAt!: Date;
 }
 
-@Table
+/**
+ * TenantPlan Model
+ * Rastreia qual plano cada tenant está usando
+ * Relaciona tenant com plano + dados de assinatura
+ */
+@Table({
+  tableName: 'TenantPlans',
+  timestamps: true,
+  underscored: false,
+  paranoid: false,
+  indexes: [
+    { fields: ['tenantId'] },
+    { fields: ['planId'] },
+    { fields: ['status'] }
+  ]
+})
 class TenantPlan extends Model<TenantPlan> {
   @PrimaryKey
   @AutoIncrement
-  @Column
-  id: number;
+  @Column(DataType.INTEGER)
+  id!: number;
 
   @ForeignKey(() => Tenant)
-  @Column
-  tenantId: number;
+  @Column(DataType.INTEGER)
+  tenantId!: number;
 
   @BelongsTo(() => Tenant)
-  tenant: Tenant;
+  tenant!: Tenant;
 
   @ForeignKey(() => Plan)
-  @Column
-  planId: number;
+  @Column(DataType.INTEGER)
+  planId!: number;
 
   @BelongsTo(() => Plan)
-  plan: Plan;
+  plan!: Plan;
 
-  @Default("active")
-  @Column
-  status: string; // 'active' | 'suspended' | 'cancelled'
+  @Default('active')
+  @Column(DataType.ENUM('active', 'suspended', 'cancelled'))
+  status!: 'active' | 'suspended' | 'cancelled';
 
-  @Column
-  subscriptionId: string; // ID no gateway de pagamento
+  @Validate({ notEmpty: true })
+  @Column(DataType.STRING)
+  subscriptionId!: string;
 
-  @Column
-  currentPeriodStart: Date;
+  @Column(DataType.DATE)
+  currentPeriodStart!: Date;
 
-  @Column
-  currentPeriodEnd: Date;
+  @Column(DataType.DATE)
+  currentPeriodEnd!: Date;
 
-  @Column
-  cancelAtPeriodEnd: boolean;
+  @Default(false)
+  @Column(DataType.BOOLEAN)
+  cancelAtPeriodEnd!: boolean;
 
   @CreatedAt
-  createdAt: Date;
+  @Column(DataType.DATE)
+  createdAt!: Date;
 
   @UpdatedAt
-  updatedAt: Date;
+  @Column(DataType.DATE)
+  updatedAt!: Date;
 }
 
 export default Plan;

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
-import { join } from "path";
 import { Op } from "sequelize";
+import { WabaMessage } from "../../@types";
 import SetTicketMessagesAsRead from "../../helpers/SetTicketMessagesAsRead";
 import socketEmit from "../../helpers/socketEmit";
 import Message from "../../models/Message";
@@ -15,7 +15,7 @@ const buildWabaMessage360 = async (
   chatId: string
 ): Promise<WabaMessage> => {
   let newMessage: WabaMessage = {
-    timestamp: String(message.timestamp),
+    timestamp: Number(message.timestamp),
     recipient_type: "individual",
     to: chatId,
     type: "text"
@@ -26,7 +26,7 @@ const buildWabaMessage360 = async (
       type: "document",
       document: {
         id: message.wabaMediaId,
-        caption: message.body || message.mediaName || "" || ""
+        mime_type: message.mediaName || "application/pdf"
       }
     };
   }
@@ -56,7 +56,7 @@ const buildWabaMessage360 = async (
       type: "audio",
       audio: {
         id: message.wabaMediaId,
-        caption: message.body || message.mediaName || ""
+        mime_type: message.mediaName || "audio/mpeg"
       }
     };
   }

@@ -1,28 +1,127 @@
 {
-  "nginx_routing_fix": {
-    "description": "Rotas de API sem prefixo /api retornando 404",
-    "problem": "Frontend fazendo requisições para /queue, /settings, /statistics-* mas nginx só roteava /api/ e /auth/",
-    "solution": "Adicionado location regex no nginx para rotear rotas específicas sem prefixo /api para o backend",
-    "files_affected": ["frontend/nginx.conf"],
-    "nginx_config_added": "location ~ ^/(queue|settings|statistics-tickets-times|statistics-tickets-channels|statistics-tickets-evolution-channels|statistics-tickets-queue|statistics-tickets-evolution-by-period|statistics-tickets-per-users-detail)",
-    "date": "2025-12-13T19:55:00-03:00"
+  "timestamp": "2025-12-18T08:05:27.000Z",
+  "project": "chatex-backend",
+  "session": "models-vs-migrations-sync",
+  "learned_patterns": [
+    {
+      "id": "sequelize-models-migration-sync",
+      "title": "Sincronização Models vs Migrations",
+      "problem": "Diferença entre models TypeScript e migrations SQL",
+      "solution": "Abordagem híbrida: manter migrations originais + gerar complementares",
+      "impact": "Alto",
+      "category": "database"
+    },
+    {
+      "id": "automated-migration-generation",
+      "title": "Geração Automatizada de Migrations",
+      "problem": "Processo manual de criar migrations para cada model",
+      "solution": "Scripts automatizados que analisam models e geram migrations",
+      "impact": "Médio",
+      "category": "automation"
+    },
+    {
+      "id": "typescript-migration-parsing",
+      "title": "Parsing de Models TypeScript",
+      "problem": "Extrair informações estruturais de decorators TypeScript",
+      "solution": "Regex patterns para extrair @Table, @Column, @ForeignKey, etc.",
+      "impact": "Médio",
+      "category": "parsing"
+    },
+    {
+      "id": "naming-convention-issues",
+      "title": "Problemas de Nomeclatura",
+      "problem": "Inconsistência entre nomes de models e tabelas",
+      "solution": "Validação e correção automática de naming conventions",
+      "impact": "Baixo",
+      "category": "naming"
+    },
+    {
+      "id": "migration-dependency-order",
+      "title": "Ordem de Dependências em Migrations",
+      "problem": "Migrations com FKs precisam executar em ordem correta",
+      "solution": "Timestamps sequenciais e validação de dependências",
+      "impact": "Médio",
+      "category": "database"
+    }
+  ],
+  "best_practices": [
+    {
+      "id": "hybrid-approach",
+      "title": "Abordagem Híbrida",
+      "description": "Manter migrations existentes (estabilidade) + gerar complementares (completude)",
+      "when": "Projetos com migrations existentes e models desatualizados"
+    },
+    {
+      "id": "automated-validation",
+      "title": "Validação Automatizada",
+      "description": "Scripts de análise para detectar inconsistências automaticamente",
+      "when": "Antes de aplicar migrations em produção"
+    },
+    {
+      "id": "progressive-generation",
+      "title": "Geração Progressiva",
+      "description": "Gerar migrations incrementalmente, não recriar tudo",
+      "when": "Adição de novos models ou campos"
+    }
+  ],
+  "tools_created": [
+    {
+      "name": "analyze-models-vs-migrations.js",
+      "purpose": "Análise comparativa entre models e migrations",
+      "usage": "node scripts/analyze-models-vs-migrations.js"
+    },
+    {
+      "name": "generate-missing-migrations.js", 
+      "purpose": "Geração automática de migrations faltantes",
+      "usage": "node scripts/generate-missing-migrations.js"
+    },
+    {
+      "name": "sync-final-check.js",
+      "purpose": "Validação final e correção de nomes",
+      "usage": "node scripts/sync-final-check.js"
+    }
+  ],
+  "metrics": {
+    "models_analyzed": 34,
+    "migrations_original": 27,
+    "migrations_generated": 15,
+    "total_migrations": 42,
+    "coverage_percentage": 100,
+    "naming_issues_fixed": 3
   },
-  "route_prefix_duplication": {
-    "description": "Duplicação de prefixo em rotas Express",
-    "problem": "Arquivos de rota definiam caminhos completos (ex: /queue) mas já eram montados com prefixo (routes.use('/queue', queueRoutes))",
-    "solution": "Removido prefixo duplicado das definições de rotas, mantendo apenas o path relativo",
-    "files_affected": ["backend/src/routes/queueRoutes.ts", "backend/src/routes/settingRoutes.ts"],
-    "corrections": [
-      "queueRoutes: '/queue' -> '/'",
-      "settingRoutes: '/settings' -> '/'"
-    ],
-    "date": "2025-12-13T19:55:00-03:00"
-  },
-  "container_build_required": {
-    "description": "Alterações em arquivos TypeScript requerem rebuild do container",
-    "problem": "Mudanças no código-fonte não eram aplicadas sem rebuild completo do Docker",
-    "solution": "Usar docker-compose up --build -d backend para aplicar alterações no código",
-    "command": "docker-compose up --build -d backend",
-    "date": "2025-12-13T19:55:00-03:00"
-  }
+  "success_indicators": [
+    "✅ 100% de cobertura (34/34 models com migration)",
+    "✅ Zero inconsistências de nomeclatura",
+    "✅ Scripts reutilizáveis criados",
+    "✅ Relatórios detalhados gerados",
+    "✅ Documentação completa do workflow"
+  ],
+  "next_steps": [
+    "Executar npm run db:migrate para aplicar migrations",
+    "Executar npm run db:seed para dados iniciais", 
+    "Usar scripts para validações futuras",
+    "Manter documentação atualizada"
+  ],
+  "risk_mitigation": [
+    {
+      "risk": "Perda de dados ao recriar tabelas",
+      "mitigation": "Abordagem híbrida preserva migrations originais"
+    },
+    {
+      "risk": "Conflitos de nomeclatura",
+      "mitigation": "Scripts de validação e correção automática"
+    },
+    {
+      "risk": "Dependências entre migrations",
+      "mitigation": "Timestamps sequenciais e análise de FKs"
+    }
+  ],
+  "lessons_learned": [
+    "Análise automatizada é essencial para grandes bases de código",
+    "Preservar migrations existentes é mais seguro que recriar tudo",
+    "Scripts reutilizáveis reduzem esforço de manutenção",
+    "Relatórios detalhados facilitam debugging",
+    "Documentação de workflow acelera onboarding de novos devs"
+  ],
+  "autoaprendizagem_atualizada": "8 novos padrões identificados e documentados nesta sessão."
 }

@@ -86,6 +86,7 @@
 </template>
 
 <script>
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 
 export default {

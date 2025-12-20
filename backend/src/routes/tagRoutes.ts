@@ -5,9 +5,22 @@ import * as TagController from "../controllers/TagController";
 
 const tagRoutes = express.Router();
 
-tagRoutes.post("/tags", isAuth, TagController.store);
-tagRoutes.get("/tags", isAuth, TagController.index);
-tagRoutes.put("/tags/:tagId", isAuth, TagController.update);
-tagRoutes.delete("/tags/:tagId", isAuth, TagController.remove);
+/**
+ * Rotas de Tags
+ *
+ * Prefixo em routes/index.ts:
+ *   routes.use('/api/tags', tagRoutes);
+ *
+ * Endpoints finais:
+ *   POST   /api/tags
+ *   GET    /api/tags
+ *   PUT    /api/tags/:tagId
+ *   DELETE /api/tags/:tagId
+ */
+
+tagRoutes.post("/", isAuth, TagController.store);
+tagRoutes.get("/", isAuth, TagController.index);
+tagRoutes.put("/:tagId", isAuth, TagController.update);
+tagRoutes.delete("/:tagId", isAuth, TagController.remove);
 
 export default tagRoutes;

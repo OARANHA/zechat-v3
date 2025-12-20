@@ -47,4 +47,16 @@ adminRoutes.post("/channels", isAuthAdmin, AdminController.storeChannel);
 
 adminRoutes.post("/userTenants", isAuthAdmin, AdminController.storeUser);
 
+adminRoutes.get(
+  "/dashboard/metrics",
+  isAuthAdmin,
+  AdminController.getDashboardMetrics
+);
+
+adminRoutes.get(
+  "/dashboard/tenants",
+  isAuthAdmin,
+  AdminController.getTenantsWithConsumption
+);
+
 export default adminRoutes;

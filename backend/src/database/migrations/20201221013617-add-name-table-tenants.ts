@@ -1,17 +1,13 @@
-import { QueryInterface, DataTypes } from "sequelize";
+import { QueryInterface } from "sequelize";
 
 module.exports = {
   up: (queryInterface: QueryInterface) => {
-    return Promise.all([
-      queryInterface.addColumn("Tenants", "name", {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: ""
-      })
-    ]);
+    // Esta coluna já foi criada na migration 20201220234957-create-table-tenant.ts
+    // Esta é uma migration duplicada - apenas ignorar
+    return Promise.resolve();
   },
 
   down: (queryInterface: QueryInterface) => {
-    return Promise.all([queryInterface.removeColumn("Tenants", "name")]);
+    return Promise.resolve();
   }
 };

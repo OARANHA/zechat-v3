@@ -1,4 +1,5 @@
 import { logger } from "../../utils/logger";
+import { WabaContext, WabaMessage } from "../../@types";
 import FindOrCreateTicketService from "../TicketServices/FindOrCreateTicketService";
 import ShowWhatsAppService from "../WhatsappService/ShowWhatsAppService";
 import VerifyContactWaba360 from "./VerifyContactWaba360";
@@ -16,17 +17,32 @@ const HandleMessage360 = async (
       const unreadMessages = 1;
       try {
         channel = await ShowWhatsAppService({ id: channelId });
+        
+        // Transformar o contato do contexto para o formato esperado
+        const contactForVerification = {
+          profile: { name: context.contacts[0].profile_name || context.contacts[0].profile },
+          wa_id: context.contacts[0].wa_id
+        };
+        
         contact = await VerifyContactWaba360(
-          context.contacts[0],
+          contactForVerification,
           channel.tenantId
         );
-        const msgData = {
+        
+        const contactData = {
+          profile: { name: context.contacts[0].profile_name || context.contacts[0].profile },
+          wa_id: context.contacts[0].wa_id
+        };
+
+        const msgData: WabaMessage = {
           ...context.messages[0],
           fromMe: false,
-          message_id: context.messages[0].id
+          message_id: context.messages[0].id,
+          timestamp: Date.now()
         };
+        
         const ticket = await FindOrCreateTicketService({
-          contact,
+          contact: contactData as any,
           whatsappId: channel.id,
           unreadMessages,
           tenantId: channel.tenantId,
@@ -42,9 +58,9 @@ const HandleMessage360 = async (
           return;
         }
         if (msgData.type !== "text") {
-          await VerifyMediaMessage360(channel, msgData, ticket, contact);
+          await VerifyMediaMessage360(channel, msgData, ticket, contactData as any);
         } else {
-          await VerifyMessage360(msgData, ticket, contact);
+          await VerifyMessage360(msgData, ticket, contactData as any);
         }
         // await VerifyStepsChatFlowTicket(msgData, ticket);
 

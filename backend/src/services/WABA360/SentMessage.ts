@@ -1,6 +1,10 @@
 import axios from "axios";
 import AppError from "../../errors/AppError";
 import { logger } from "../../utils/logger";
+import { WabaMessage, WabaResponse } from "../../@types";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface Request {
   message: WabaMessage;

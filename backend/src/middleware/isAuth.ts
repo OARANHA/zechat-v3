@@ -24,12 +24,13 @@ const isAuth = (req: Request, res: Response, next: NextFunction): void => {
 
   try {
     const decoded = verify(token, authConfig.secret);
-    const { id, profile, tenantId } = decoded as TokenPayload;
+    const { id, profile, tenantId, username } = decoded as TokenPayload;
 
     req.user = {
       id,
       profile,
-      tenantId
+      tenantId,
+      email: `${username}@default.com`
     };
   } catch (err) {
     throw new AppError("Invalid token.", 403);

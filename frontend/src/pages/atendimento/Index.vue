@@ -1,13 +1,6 @@
 <template>
-  <div
-    class="WAL position-relative bg-grey-3"
-    :style="style"
-  >
-    <q-layout
-      class="WAL__layout shadow-3"
-      container
-      view="lHr LpR lFr"
-    >
+  <div class="WAL position-relative bg-grey-3" :style="style">
+    <q-layout class="WAL__layout shadow-3" container view="lHr LpR lFr">
       <q-drawer
         v-model="drawerTickets"
         @hide="drawerTickets = false"
@@ -19,21 +12,10 @@
         :width="$q.screen.lt.md ? $q.screen.width : 380"
         content-class="hide-scrollbar full-width"
       >
-        <q-toolbar
-          class="q-gutter-xs full-width"
-          style="height: 64px"
-        >
-          <q-btn-dropdown
-            no-caps
-            color="black"
-            class="text-bold btn-rounded"
-            ripple
-          >
+        <q-toolbar class="q-gutter-xs full-width" style="height: 64px">
+          <q-btn-dropdown no-caps color="black" class="text-bold btn-rounded" ripple>
             <template v-slot:label>
-              <div
-                :style="{ maxWidth: $q.screen.lt.sm ? '120px' : '' }"
-                class="ellipsis"
-              >
+              <div :style="{ maxWidth: $q.screen.lt.sm ? '120px' : '' }" class="ellipsis">
                 {{ username }}
               </div>
             </template>
@@ -51,22 +33,13 @@
                   />
                 </q-item-section>
               </q-item> -->
-              <q-item
-                clickable
-                v-close-popup
-                @click="abrirModalUsuario"
-              >
+              <q-item clickable v-close-popup @click="abrirModalUsuario">
                 <q-item-section>Perfil</q-item-section>
               </q-item>
-              <q-item
-                clickable
-                v-close-popup
-                @click="efetuarLogout"
-              >
+              <q-item clickable v-close-popup @click="efetuarLogout">
                 <q-item-section>Sair</q-item-section>
               </q-item>
               <q-separator />
-
             </q-list>
           </q-btn-dropdown>
           <q-space />
@@ -81,28 +54,16 @@
             </q-tooltip>
           </q-btn>
         </q-toolbar>
-        <StatusWhatsapp
-          v-if="false"
-          class="q-mx-sm full-width"
-        />
-        <q-toolbar
-          v-show="toolbarSearch"
-          class="row q-gutter-sm q-py-sm items-center"
-        >
+        <StatusWhatsapp v-if="false" class="q-mx-sm full-width" />
+        <q-toolbar v-show="toolbarSearch" class="row q-gutter-sm q-py-sm items-center">
           <q-separator class="absolute-top" />
           <q-btn
             :icon="!cFiltroSelecionado ? 'mdi-filter-outline' : 'mdi-filter-plus'"
-            class="btn-rounded "
+            class="btn-rounded"
             :color="cFiltroSelecionado ? 'deep-orange-9' : 'primary'"
           >
-            <q-menu
-              content-class="shadow-10 no-scroll"
-              square
-            >
-              <div
-                class="row q-pa-sm"
-                style="min-width: 350px; max-width: 350px"
-              >
+            <q-menu content-class="shadow-10 no-scroll" square>
+              <div class="row q-pa-sm" style="min-width: 350px; max-width: 350px">
                 <div class="q-ma-sm">
                   <div class="text-h6 q-mb-md">Filtros Avançados</div>
                   <q-toggle
@@ -113,10 +74,7 @@
                     :class="{ 'q-mb-lg': pesquisaTickets.showAll }"
                     @input="debounce(BuscarTicketFiltro(), 700)"
                   />
-                  <q-separator
-                    class="q-mb-md"
-                    v-if="!pesquisaTickets.showAll"
-                  />
+                  <q-separator class="q-mb-md" v-if="!pesquisaTickets.showAll" />
                   <div v-if="!pesquisaTickets.showAll">
                     <q-select
                       :disable="pesquisaTickets.showAll"
@@ -140,14 +98,8 @@
                       input-style="width: 300px; max-width: 300px;"
                     />
 
-                    <q-list
-                      dense
-                      class="q-my-md"
-                    >
-                      <q-item
-                        tag="label"
-                        v-ripple
-                      >
+                    <q-list dense class="q-my-md">
+                      <q-item tag="label" v-ripple>
                         <q-item-section avatar>
                           <q-checkbox
                             v-model="pesquisaTickets.status"
@@ -161,10 +113,7 @@
                           <q-item-label>Abertos</q-item-label>
                         </q-item-section>
                       </q-item>
-                      <q-item
-                        tag="label"
-                        v-ripple
-                      >
+                      <q-item tag="label" v-ripple>
                         <q-item-section avatar>
                           <q-checkbox
                             v-model="pesquisaTickets.status"
@@ -178,10 +127,7 @@
                           <q-item-label>Pendentes</q-item-label>
                         </q-item-section>
                       </q-item>
-                      <q-item
-                        tag="label"
-                        v-ripple
-                      >
+                      <q-item tag="label" v-ripple>
                         <q-item-section avatar>
                           <q-checkbox
                             v-model="pesquisaTickets.status"
@@ -208,11 +154,7 @@
                       @input="debounce(BuscarTicketFiltro(), 700)"
                     />
                   </div>
-                  <q-separator
-                    class="q-my-md"
-                    spaced
-                    v-if="!pesquisaTickets.showAll"
-                  />
+                  <q-separator class="q-my-md" spaced v-if="!pesquisaTickets.showAll" />
                   <q-btn
                     class="float-right q-my-md"
                     color="negative"
@@ -246,7 +188,11 @@
             color="primary"
             class="btn-rounded"
             icon="mdi-book-account-outline"
-            @click="$q.screen.lt.md ? modalNovoTicket = true : $router.push({ name: 'chat-contatos' })"
+            @click="
+              $q.screen.lt.md
+                ? (modalNovoTicket = true)
+                : $router.push({ name: 'chat-contatos' })
+            "
           >
             <q-tooltip content-class="bg-padrao text-grey-9 text-bold">
               Contatos
@@ -266,19 +212,33 @@
               <q-tabs v-model="selectedTab" class="tab-scroll">
                 <q-tab name="open" v-if="openTickets.length > 0">
                   Abertos
-                  <q-badge v-if="openTickets.length > 0" color="red" textColor="white">{{ openTickets.length }}</q-badge>
+                  <q-badge v-if="openTickets.length > 0" color="red" textColor="white">{{
+                    openTickets.length
+                  }}</q-badge>
                 </q-tab>
                 <q-tab name="pending" v-if="pendingTickets.length > 0">
                   Pendentes
-                  <q-badge v-if="pendingTickets.length > 0" color="red" textColor="white">{{ pendingTickets.length }}</q-badge>
+                  <q-badge
+                    v-if="pendingTickets.length > 0"
+                    color="red"
+                    textColor="white"
+                    >{{ pendingTickets.length }}</q-badge
+                  >
                 </q-tab>
                 <q-tab name="closed" v-if="closedTickets.length > 0">
                   Fechados
-                  <q-badge v-if="closedTickets.length > 0" color="red" textColor="white">{{ closedTickets.length }}</q-badge>
+                  <q-badge
+                    v-if="closedTickets.length > 0"
+                    color="red"
+                    textColor="white"
+                    >{{ closedTickets.length }}</q-badge
+                  >
                 </q-tab>
                 <q-tab name="group" v-if="groupTickets.length > 0">
                   Grupos
-                  <q-badge v-if="groupTickets.length > 0" color="red" textColor="white">{{ groupTickets.length }}</q-badge>
+                  <q-badge v-if="groupTickets.length > 0" color="red" textColor="white">{{
+                    groupTickets.length
+                  }}</q-badge>
                 </q-tab>
               </q-tabs>
             </div>
@@ -317,22 +277,13 @@
           </div>
           <div v-if="loading">
             <div class="row justify-center q-my-md">
-              <q-spinner
-                color="white"
-                size="3em"
-                :thickness="3"
-              />
+              <q-spinner color="white" size="3em" :thickness="3" />
             </div>
-            <div class="row col justify-center q-my-sm text-white">
-              Carregando...
-            </div>
+            <div class="row col justify-center q-my-sm text-white">Carregando...</div>
           </div>
         </q-scroll-area>
         <!-- <q-separator /> -->
-        <div
-          class="absolute-bottom row justify-between"
-          style="height: 50px"
-        >
+        <div class="absolute-bottom row justify-between" style="height: 50px">
           <q-toggle
             size="xl"
             keep-color
@@ -346,14 +297,11 @@
             @input="$setConfigsUsuario({ isDark: !$q.dark.isActive })"
           >
             <q-tooltip content-class="text-body1">
-              {{ $q.dark.isActive ? 'Desativar' : 'Ativar' }} Modo Escuro (Dark Mode)
+              {{ $q.dark.isActive ? "Desativar" : "Ativar" }} Modo Escuro (Dark Mode)
             </q-tooltip>
           </q-toggle>
           <div class="flex flex-inline q-pt-xs">
-            <q-scroll-area
-              horizontal
-              style="heigth: 40px; width: 300px;"
-            >
+            <q-scroll-area horizontal style="heigth: 40px; width: 300px">
               <template v-for="item in whatsapps">
                 <q-btn
                   v-if="item && item.status"
@@ -375,7 +323,6 @@
                 </q-btn>
               </template>
             </q-scroll-area>
-
           </div>
         </div>
       </q-drawer>
@@ -395,25 +342,21 @@
         side="right"
         content-class="bg-grey-1"
       >
-        <div
-          class="bg-white full-width no-border-radius q-pa-sm"
-          style="height:60px;"
-        >
-          <span class="q-ml-md text-h6">
-            Dados Contato
-          </span>
+        <div class="bg-white full-width no-border-radius q-pa-sm" style="height: 60px">
+          <span class="q-ml-md text-h6"> Dados Contato </span>
         </div>
         <q-separator />
         <q-scroll-area style="height: calc(100vh - 70px)">
           <div class="q-pa-sm">
-            <q-card
-              class="bg-white btn-rounded"
-              style="width: 100%"
-              bordered
-              flat
-            >
+            <q-card class="bg-white btn-rounded" style="width: 100%" bordered flat>
               <q-card-section class="text-center">
-                <q-avatar style="border: 1px solid #9e9e9ea1 !important; width: 100px; height: 100px">
+                <q-avatar
+                  style="
+                    border: 1px solid #9e9e9ea1 !important;
+                    width: 100px;
+                    height: 100px;
+                  "
+                >
                   <q-icon
                     name="mdi-account"
                     style="width: 100px; height: 100px"
@@ -426,19 +369,12 @@
                     style="width: 100px; height: 100px"
                   >
                     <template v-slot:error>
-                      <q-icon
-                        name="mdi-account"
-                        size="1.5em"
-                        color="grey-5"
-                      />
+                      <q-icon name="mdi-account" size="1.5em" color="grey-5" />
                     </template>
                   </q-img>
                 </q-avatar>
-                <div
-                  class="text-caption q-mt-md"
-                  style="font-size: 14px"
-                >
-                  {{ ticketFocado.contact.name || '' }}
+                <div class="text-caption q-mt-md" style="font-size: 14px">
+                  {{ ticketFocado.contact.name || "" }}
                 </div>
                 <div
                   class="text-caption q-mt-sm"
@@ -446,7 +382,7 @@
                   id="number"
                   @click="copyContent(ticketFocado.contact.number || '')"
                 >
-                  {{ ticketFocado.contact.number || '' }}
+                  {{ ticketFocado.contact.number || "" }}
                 </div>
                 <div
                   class="text-caption q-mt-md"
@@ -454,7 +390,7 @@
                   id="email"
                   @click="copyContent(ticketFocado.contact.email || '')"
                 >
-                  {{ ticketFocado.contact.email || '' }}
+                  {{ ticketFocado.contact.email || "" }}
                 </div>
                 <q-btn
                   color="primary"
@@ -509,19 +445,15 @@
                   dropdown-icon="add"
                   @input="tagSelecionada"
                 >
-                  <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
-                    <q-item
-                      v-bind="itemProps"
-                      v-on="itemEvents"
-                    >
+                  <template
+                    v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }"
+                  >
+                    <q-item v-bind="itemProps" v-on="itemEvents">
                       <q-item-section>
                         <q-item-label v-html="opt.tag"></q-item-label>
                       </q-item-section>
                       <q-item-section side>
-                        <q-checkbox
-                          :value="selected"
-                          @input="toggleOption(opt)"
-                        />
+                        <q-checkbox :value="selected" @input="toggleOption(opt)" />
                       </q-item-section>
                     </q-item>
                   </template>
@@ -543,10 +475,7 @@
                     </q-chip>
                   </template>
                   <template v-slot:no-option="{ itemProps, itemEvents }">
-                    <q-item
-                      v-bind="itemProps"
-                      v-on="itemEvents"
-                    >
+                    <q-item v-bind="itemProps" v-on="itemEvents">
                       <q-item-section>
                         <q-item-label class="text-negative text-bold">
                           Ops... Sem etiquetas criadas!
@@ -557,7 +486,6 @@
                       </q-item-section>
                     </q-item>
                   </template>
-
                 </q-select>
               </q-card-section>
             </q-card>
@@ -588,19 +516,15 @@
                   dropdown-icon="add"
                   @input="carteiraDefinida"
                 >
-                  <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
-                    <q-item
-                      v-bind="itemProps"
-                      v-on="itemEvents"
-                    >
+                  <template
+                    v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }"
+                  >
+                    <q-item v-bind="itemProps" v-on="itemEvents">
                       <q-item-section>
                         <q-item-label v-html="opt.name"></q-item-label>
                       </q-item-section>
                       <q-item-section side>
-                        <q-checkbox
-                          :value="selected"
-                          @input="toggleOption(opt)"
-                        />
+                        <q-checkbox :value="selected" @input="toggleOption(opt)" />
                       </q-item-section>
                     </q-item>
                   </template>
@@ -616,10 +540,7 @@
                     </q-chip>
                   </template>
                   <template v-slot:no-option="{ itemProps, itemEvents }">
-                    <q-item
-                      v-bind="itemProps"
-                      v-on="itemEvents"
-                    >
+                    <q-item v-bind="itemProps" v-on="itemEvents">
                       <q-item-section>
                         <q-item-label class="text-negative text-bold">
                           Ops... Sem carteiras disponíveis!!
@@ -627,7 +548,6 @@
                       </q-item-section>
                     </q-item>
                   </template>
-
                 </q-select>
               </q-card-section>
             </q-card>
@@ -645,10 +565,17 @@
               <q-card-section class="q-pa-none">
                 <template v-if="ticketFocado.scheduledMessages">
                   <q-list>
-                    <q-item v-for="(message, idx) in ticketFocado.scheduledMessages.filter((msg) => !msg.isDeleted)" :key="idx" clickable>
+                    <q-item
+                      v-for="(message, idx) in ticketFocado.scheduledMessages.filter(
+                        (msg) => !msg.isDeleted
+                      )"
+                      :key="idx"
+                      clickable
+                    >
                       <q-item-section>
                         <q-item-label caption>
-                          <b>Agendado para:</b> {{ $formatarData(message.scheduleDate, 'dd/MM/yyyy HH:mm') }}
+                          <b>Agendado para:</b>
+                          {{ $formatarData(message.scheduleDate, "dd/MM/yyyy HH:mm") }}
                           <q-btn
                             flat
                             round
@@ -659,10 +586,8 @@
                             @click="deletarMensagem(message)"
                           />
                         </q-item-label>
-                        <q-item-label
-                          caption
-                          lines="2"
-                        > <b>Msg:</b> {{ message.mediaName || message.body }}
+                        <q-item-label caption lines="2">
+                          <b>Msg:</b> {{ message.mediaName || message.body }}
                         </q-item-label>
                       </q-item-section>
                       <q-tooltip :delay="500">
@@ -696,7 +621,6 @@
                     </q-item>
                   </q-list>
                 </template>
-
               </q-card-section>
             </q-card>
           </div>
@@ -724,8 +648,11 @@
         @hide="logsTicket = []"
       >
         <q-card style="width: 400px">
-          <q-card-section :class="{ 'bg-grey-2': !$q.dark.isActive, 'bg-primary': $q.dark.isActive }">
-            <div class="text-h6">Logs Ticket: {{ ticketFocado.id }}
+          <q-card-section
+            :class="{ 'bg-grey-2': !$q.dark.isActive, 'bg-primary': $q.dark.isActive }"
+          >
+            <div class="text-h6">
+              Logs Ticket: {{ ticketFocado.id }}
               <q-btn
                 icon="close"
                 color="negative"
@@ -737,10 +664,7 @@
             </div>
           </q-card-section>
           <q-card-section class="">
-            <q-scroll-area
-              style="height: calc(100vh - 200px);"
-              class="full-width"
-            >
+            <q-scroll-area style="height: calc(100vh - 200px)" class="full-width">
               <q-timeline
                 color="black"
                 style="width: 360px"
@@ -749,18 +673,22 @@
               >
                 <template v-for="(log, idx) in logsTicket">
                   <q-timeline-entry
-                    :key="log && log.id || idx"
+                    :key="(log && log.id) || idx"
                     :subtitle="$formatarData(log.createdAt, 'dd/MM/yyyy HH:mm')"
-                    :color="messagesLog[log.type] && messagesLog[log.type].color || ''"
-                    :icon="messagesLog[log.type] && messagesLog[log.type].icon || ''"
+                    :color="(messagesLog[log.type] && messagesLog[log.type].color) || ''"
+                    :icon="(messagesLog[log.type] && messagesLog[log.type].icon) || ''"
                   >
                     <template v-slot:title>
                       <div
                         :class="{ 'text-white': $q.dark.isActive }"
                         style="width: calc(100% - 20px)"
                       >
-                        <div class="row col text-bold text-body2"> {{ log.user && log.user.name || 'Bot' }}:</div>
-                        <div class="row col"> {{ messagesLog[log.type] && messagesLog[log.type].message }}</div>
+                        <div class="row col text-bold text-body2">
+                          {{ (log.user && log.user.name) || "Bot" }}:
+                        </div>
+                        <div class="row col">
+                          {{ messagesLog[log.type] && messagesLog[log.type].message }}
+                        </div>
                       </div>
                     </template>
                   </q-timeline-entry>
@@ -770,13 +698,9 @@
           </q-card-section>
         </q-card>
       </q-dialog>
-
     </q-layout>
     <audio ref="audioNotificationPlay">
-      <source
-        :src="alertSound"
-        type="audio/mp3"
-      >
+      <source :src="alertSound" type="audio/mp3" />
     </audio>
   </div>
 </template>
@@ -791,10 +715,12 @@ import mixinSockets from './mixinSockets'
 import socketInitial from 'src/layouts/socketInitial'
 import ModalNovoTicket from './ModalNovoTicket'
 import { ListarFilas } from 'src/service/filas'
-const UserQueues = JSON.parse(localStorage.getItem('queues'))
+const queuesData = localStorage.getItem('queues')
+const UserQueues = queuesData && queuesData !== 'undefined' ? JSON.parse(queuesData) : []
 const profile = localStorage.getItem('profile')
 const username = localStorage.getItem('username')
-const usuario = JSON.parse(localStorage.getItem('usuario'))
+const usuarioData = localStorage.getItem('usuario')
+const usuario = usuarioData && usuarioData !== 'undefined' ? JSON.parse(usuarioData) : {}
 import StatusWhatsapp from 'src/components/StatusWhatsapp'
 import alertSound from 'src/assets/sound.mp3'
 import { ListarWhatsapps } from 'src/service/sessoesWhatsapp'
@@ -1143,7 +1069,18 @@ export default {
     this.listarFilas()
     this.listarEtiquetas()
     this.listarConfiguracoes()
-    const filtros = JSON.parse(localStorage.getItem('filtrosAtendimento'))
+
+    const filtrosRaw = localStorage.getItem('filtrosAtendimento')
+    let filtros = null
+
+    try {
+      filtros = filtrosRaw ? JSON.parse(filtrosRaw) : null
+    } catch (e) {
+      // se estiver corrompido, zera
+      filtros = null
+      localStorage.removeItem('filtrosAtendimento')
+    }
+
     if (!filtros?.pageNumber) {
       localStorage.setItem('filtrosAtendimento', JSON.stringify(this.pesquisaTickets))
     }
@@ -1152,7 +1089,20 @@ export default {
     this.$root.$on('infor-cabecalo-chat:acao-menu', this.setValueMenu)
     this.$root.$on('update-ticket:info-contato', this.setValueMenuContact)
     this.socketTicketList()
-    this.pesquisaTickets = JSON.parse(localStorage.getItem('filtrosAtendimento'))
+
+    // --- trata filtrosAtendimento com segurança ---
+    const filtrosRaw = localStorage.getItem('filtrosAtendimento')
+    try {
+      this.pesquisaTickets = filtrosRaw
+        ? JSON.parse(filtrosRaw) // só faz parse se tiver string válida
+        : this.pesquisaTickets // senão mantém o default
+    } catch (e) {
+      console.error('Erro ao ler filtrosAtendimento, resetando filtros:', e)
+      this.pesquisaTickets = { ...this.pesquisaTickets }
+      localStorage.setItem('filtrosAtendimento', JSON.stringify(this.pesquisaTickets))
+    }
+    // -----------------------------------------------
+
     this.$root.$on('handlerNotifications', this.handlerNotifications)
     await this.listarWhatsapps()
     await this.consultarTickets()

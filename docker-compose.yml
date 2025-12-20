@@ -83,6 +83,8 @@ services:
       dockerfile: Dockerfile
     container_name: 28web-backend
     restart: unless-stopped
+    ports:
+      - "3100:3100"
     expose:
       - "3100"
     environment:
@@ -114,6 +116,8 @@ services:
       - INSTAGRAM_USER=your_instagram_user
       - INSTAGRAM_PASSWORD=your_instagram_password
       - TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+      - ADMIN_DOMAIN=aranha.com@gmail.com
+      - ADMIN_PASSWORD=Ara1nha1@2020
       # Billing
       - BILLING_PROVIDER=vendaerp
       - VENDAERP_API_URL=https://api.vendaerp.com.br

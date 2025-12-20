@@ -1,29 +1,36 @@
 import request from 'src/service/request'
 
+/**
+ * Serviços para sessões WhatsApp
+ * Backend:
+ * - routes.use('/api/whatsapp', whatsappRoutes) - para /whatsapp
+ * - routes.use('/api/whatsapp-sessions', whatsappSessionRoutes) - para /whatsappsession
+ */
+
 export function ListarWhatsapps (whatsAppId) {
   return request({
-    url: '/whatsapp/',
+    url: '/whatsapp/whatsapp/',
     method: 'get'
   })
 }
 
 export function StartWhatsappSession (whatsAppId) {
   return request({
-    url: `/whatsappsession/${whatsAppId}`,
+    url: `/whatsapp-sessions/whatsappsession/${whatsAppId}`,
     method: 'post'
   })
 }
 
 export function DeleteWhatsappSession (whatsAppId) {
   return request({
-    url: `/whatsappsession/${whatsAppId}`,
+    url: `/whatsapp-sessions/whatsappsession/${whatsAppId}`,
     method: 'delete'
   })
 }
 
 export function RequestNewQrCode (data) {
   return request({
-    url: `/whatsappsession/${data.id}`,
+    url: `/whatsapp-sessions/whatsappsession/${data.id}`,
     method: 'put',
     data
   })
@@ -31,14 +38,14 @@ export function RequestNewQrCode (data) {
 
 export function GetWhatSession (whatsAppId) {
   return request({
-    url: `/whatsapp/${whatsAppId}`,
+    url: `/whatsapp/whatsapp/${whatsAppId}`,
     method: 'get'
   })
 }
 
 export function UpdateWhatsapp (whatsAppId, data) {
   return request({
-    url: `/whatsapp/${whatsAppId}`,
+    url: `/whatsapp/whatsapp/${whatsAppId}`,
     method: 'put',
     data
   })

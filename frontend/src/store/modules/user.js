@@ -1,6 +1,7 @@
 import { RealizarLogin } from '../../service/login'
 import { Notify, Dark } from 'quasar'
 import { socketIO } from 'src/utils/socket'
+import router from '../../router'
 
 const socket = socketIO()
 
@@ -43,10 +44,13 @@ const user = {
       user.email = user.email.trim()
       try {
         const { data } = await RealizarLogin(user)
+        console.log('Dados recebidos no login:', data)
         localStorage.setItem('token', JSON.stringify(data.token))
         localStorage.setItem('username', data.username)
         localStorage.setItem('profile', data.profile)
         localStorage.setItem('userId', data.userId)
+        localStorage.setItem('tenantId', data.tenantId)
+        console.log('tenantId salvo no localStorage:', data.tenantId)
         localStorage.setItem('usuario', JSON.stringify(data))
         localStorage.setItem('queues', JSON.stringify(data.queues))
         localStorage.setItem('queues', JSON.stringify(data.queues))
@@ -71,15 +75,15 @@ const user = {
         })
 
         if (data.profile === 'admin') {
-          this.$router.push({
-            name: 'home-dashboard'
+          router.push({
+            name: 'admin-dashboard'
           })
         } else if (data.profile === 'super') {
-          this.$router.push({
-            name: 'empresassuper'
+          router.push({
+            name: 'super-admin-dashboard'
           })
         } else {
-          this.$router.push({
+          router.push({
             name: 'atendimento'
           })
         }

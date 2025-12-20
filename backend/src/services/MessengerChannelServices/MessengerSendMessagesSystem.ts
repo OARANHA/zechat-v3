@@ -5,7 +5,7 @@ import { readFile } from "fs/promises";
 import ffmpeg from "fluent-ffmpeg";
 import { join } from "path";
 import { Op } from "sequelize";
-import sharp from "sharp";
+// import sharp from "sharp"; // TODO: remover sharp ou re-instalar dependência
 import { MessengerClient } from "messaging-api-messenger";
 import SetTicketMessagesAsRead from "../../helpers/SetTicketMessagesAsRead";
 import socketEmit from "../../helpers/socketEmit";
@@ -102,8 +102,9 @@ const MessengerSendMessagesSystem = async (
           sendedMessage = await messengerBot.sendAudio(chatId, voice);
         }
         if (message.mediaType === "image") {
-          const photo = await sharp(file).jpeg().toBuffer();
-          sendedMessage = await messengerBot.sendImage(chatId, photo, {
+          // TODO: processar imagem sem sharp
+          // const photo = await sharp(file).jpeg().toBuffer();
+          sendedMessage = await messengerBot.sendImage(chatId, file, {
             filename: message.mediaName
           });
         }

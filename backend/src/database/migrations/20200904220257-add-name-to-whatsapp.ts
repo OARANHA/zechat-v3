@@ -1,15 +1,12 @@
-import { QueryInterface, DataTypes } from "sequelize";
+import { QueryInterface } from "sequelize";
 
 module.exports = {
   up: (queryInterface: QueryInterface) => {
-    return queryInterface.addColumn("Whatsapps", "name", {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    });
+    // Coluna name já existe em Whatsapps - migration duplicada
+    return Promise.resolve();
   },
 
   down: (queryInterface: QueryInterface) => {
-    return queryInterface.removeColumn("Whatsapps", "name");
+    return Promise.resolve();
   }
 };

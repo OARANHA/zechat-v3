@@ -95,6 +95,7 @@
 </template>
 
 <script>
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 
 import { CriarMensagemRapida, AlterarMensagemRapida } from 'src/service/mensagensRapidas'

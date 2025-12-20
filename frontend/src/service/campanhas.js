@@ -1,5 +1,15 @@
 import request from 'src/service/request'
 
+/**
+ * Serviços para gerenciamento de Campanhas
+ * Backend: routes.use('/api/campaigns', campaignRoutes)
+ * Backend: routes.use('/api/campaign-contacts', campaignContactsRoutes)
+ */
+
+/**
+ * Cria uma nova campanha
+ * Endpoint: POST /api/campaigns
+ */
 export function CriarCampanha (data) {
   return request({
     url: '/campaigns/',
@@ -8,6 +18,10 @@ export function CriarCampanha (data) {
   })
 }
 
+/**
+ * Inicia uma campanha
+ * Endpoint: POST /api/campaigns/start/:campaignId
+ */
 export function IniciarCampanha (campaignId) {
   return request({
     url: `/campaigns/start/${campaignId}/`,
@@ -18,6 +32,10 @@ export function IniciarCampanha (campaignId) {
   })
 }
 
+/**
+ * Cancela uma campanha
+ * Endpoint: POST /api/campaigns/cancel/:campaignId
+ */
 export function CancelarCampanha (campaignId) {
   return request({
     url: `/campaigns/cancel/${campaignId}/`,
@@ -28,6 +46,10 @@ export function CancelarCampanha (campaignId) {
   })
 }
 
+/**
+ * Lista todas as campanhas
+ * Endpoint: GET /api/campaigns
+ */
 export function ListarCampanhas () {
   return request({
     url: '/campaigns/',
@@ -35,6 +57,10 @@ export function ListarCampanhas () {
   })
 }
 
+/**
+ * Altera uma campanha existente
+ * Endpoint: PUT /api/campaigns/:campaignId
+ */
 export function AlterarCampanha (data, id) {
   return request({
     url: `/campaigns/${id}`,
@@ -43,6 +69,10 @@ export function AlterarCampanha (data, id) {
   })
 }
 
+/**
+ * Deleta uma campanha
+ * Endpoint: DELETE /api/campaigns/:campaignId
+ */
 export function DeletarCampanha (data) {
   return request({
     url: `/campaigns/${data.id}`,
@@ -50,17 +80,25 @@ export function DeletarCampanha (data) {
   })
 }
 
+/**
+ * Adiciona contatos a uma campanha
+ * Endpoint: POST /api/campaign-contacts/campaigns/contacts/:campaignId
+ */
 export function AdicionarContatosCampanha (data, campaignId) {
   return request({
-    url: `/campaigns/contacts/${campaignId}/`,
+    url: `/campaign-contacts/campaigns/contacts/${campaignId}/`,
     method: 'post',
     data
   })
 }
 
+/**
+ * Lista contatos de uma campanha
+ * Endpoint: GET /api/campaign-contacts/campaigns/contacts/:campaignId
+ */
 export function ListarContatosCampanha (campaignId) {
   return request({
-    url: `/campaigns/contacts/${campaignId}/`,
+    url: `/campaign-contacts/campaigns/contacts/${campaignId}/`,
     method: 'get',
     params: {
       campaignId
@@ -68,9 +106,13 @@ export function ListarContatosCampanha (campaignId) {
   })
 }
 
+/**
+ * Deleta um contato específico de uma campanha
+ * Endpoint: DELETE /api/campaign-contacts/campaigns/contacts/:campaignId/:contactId
+ */
 export function DeletarContatoCampanha (campaignId, contactId) {
   return request({
-    url: `/campaigns/contacts/${campaignId}/${contactId}/`,
+    url: `/campaign-contacts/campaigns/contacts/${campaignId}/${contactId}/`,
     method: 'delete',
     params: {
       campaignId,
@@ -79,9 +121,13 @@ export function DeletarContatoCampanha (campaignId, contactId) {
   })
 }
 
+/**
+ * Deleta todos os contatos de uma campanha
+ * Endpoint: DELETE /api/campaign-contacts/campaigns/deleteall/contacts/:campaignId
+ */
 export function DeletarTodosContatosCampanha (campaignId) {
   return request({
-    url: `/campaigns/deleteall/contacts/${campaignId}/`,
+    url: `/campaign-contacts/campaigns/deleteall/contacts/${campaignId}/`,
     method: 'delete',
     params: {
       campaignId

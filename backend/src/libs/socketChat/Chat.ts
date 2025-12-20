@@ -27,6 +27,10 @@ const events: any = {};
 const JoinChatServer = (socket: Socket) => {
   const { user } = socket.handshake.auth;
 
+  if (!user || !user.tenantId) {
+    return;
+  }
+
   logger.info(`joinChatServer USER ${user.name}`);
   const { tenantId } = user;
   const socketDataTenant = `socketData_${tenantId}`;
@@ -61,6 +65,10 @@ const JoinChatServer = (socket: Socket) => {
 
 const UpdateUsers = (socket: Socket) => {
   const { user } = socket.handshake.auth;
+
+  if (!user || !user.tenantId) {
+    return;
+  }
 
   const socketDataTenant = `socketData_${user.tenantId}`;
   const dataTenant = shared[socketDataTenant];
@@ -144,6 +152,10 @@ const UpdateUsers = (socket: Socket) => {
 const UpdateOnlineBubbles = (socket: Socket) => {
   const { user } = socket.handshake.auth;
 
+  if (!user || !user.tenantId) {
+    return;
+  }
+
   const socketDataTenant = `socketData_${user.tenantId}`;
   const dataTenant = shared[socketDataTenant];
   const sortedUserList = fromPairs(
@@ -170,10 +182,13 @@ const UpdateOnlineBubbles = (socket: Socket) => {
 const SpawnOpenChatWindows = (socket: Socket) => {
   const { user } = socket.handshake.auth;
 
-  const userSchema = User.findByPk(user.id);
-  // const conversationSchema = require("../models/chat/conversation");
-  // buscar e devolver a conversa
-  sendToSelf(socket, "spawnChatWindow", userSchema);
+  if (!user) {
+    return;
+  }
+
+  User.findByPk(user.id).then(userSchema => {
+    sendToSelf(socket, "spawnChatWindow", userSchema);
+  });
 };
 
 const spawnChatWindow = (socket: Socket) => {
@@ -188,6 +203,10 @@ const spawnChatWindow = (socket: Socket) => {
 
 const onSetUserIdle = (socket: Socket) => {
   const { user } = socket.handshake.auth;
+
+  if (!user || !user.tenantId) {
+    return;
+  }
 
   const socketDataTenant = `socketData_${user.tenantId}`;
   socket.on(`${user.tenantId}:setUserIdle`, () => {
@@ -217,6 +236,10 @@ const onSetUserIdle = (socket: Socket) => {
 
 const onSetUserActive = (socket: Socket) => {
   const { user } = socket.handshake.auth;
+
+  if (!user || !user.tenantId) {
+    return;
+  }
 
   const socketDataTenant = `socketData_${user.tenantId}`;
 
@@ -254,6 +277,10 @@ const onUpdateUsers = (socket: Socket) => {
 
 const onChatMessage = (socket: Socket) => {
   const { user } = socket.handshake.auth;
+
+  if (!user || !user.tenantId) {
+    return;
+  }
 
   const { tenantId } = user;
   const socketDataTenant = `socketData_${tenantId}`;
@@ -297,6 +324,10 @@ const onChatMessage = (socket: Socket) => {
 const onChatTyping = (socket: Socket) => {
   const { user } = socket.handshake.auth;
 
+  if (!user || !user.tenantId) {
+    return;
+  }
+
   const { tenantId } = user;
   const socketDataTenant = `socketData_${tenantId}`;
 
@@ -338,6 +369,11 @@ const onChatTyping = (socket: Socket) => {
 
 const onChatStopTyping = (socket: Socket) => {
   const { user } = socket.handshake.auth;
+
+  if (!user || !user.tenantId) {
+    return;
+  }
+
   const { tenantId } = user;
   const socketDataTenant = `socketData_${tenantId}`;
   socket.on("chatStopTyping", data => {
@@ -386,6 +422,10 @@ const saveChatWindow = (socket: Socket) => {
 const onDisconnect = (socket: Socket) => {
   socket.on("disconnect", async reason => {
     const { user } = socket.handshake.auth;
+
+    if (!user || !user.tenantId) {
+      return;
+    }
 
     const { tenantId } = user;
     const socketDataTenant = `socketData_${tenantId}`;
@@ -446,8 +486,12 @@ events.onDisconnect = onDisconnect;
 events.updateOnlineBubbles = (socket: Socket) => {
   const { user } = socket.handshake.auth;
 
+  if (!user || !user.tenantId) {
+    return;
+  }
+
   socket.on(`${user.tenantId}:chat:updateOnlineBubbles`, () => {
-    UpdateOnlineBubbles(user.tenantId);
+    UpdateOnlineBubbles(socket);
   });
 };
 events.getOpenChatWindows = (socket: Socket) => {
@@ -457,7 +501,7 @@ events.getOpenChatWindows = (socket: Socket) => {
 };
 
 function register(socket: Socket): void {
-  if (!socket.handshake?.auth?.tenantId) {
+  if (!socket.handshake?.auth?.user || !socket.handshake?.auth?.user?.tenantId) {
     return;
   }
 

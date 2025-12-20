@@ -258,6 +258,7 @@ import { UpdateWhatsapp, CriarWhatsapp } from 'src/service/sessoesWhatsapp'
 import { ListarHub, AdicionarHub } from 'src/service/hub'
 import cInput from 'src/components/cInput.vue'
 import { copyToClipboard, Notify } from 'quasar'
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 
 export default {

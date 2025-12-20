@@ -295,6 +295,12 @@ const objMenu = [
 
 const objMenuAdmin = [
   {
+    title: 'Dashboard Admin',
+    caption: 'Visão de sua empresa',
+    icon: 'mdi-view-dashboard-variant',
+    routeName: 'admin-dashboard'
+  },
+  {
     title: 'Canais',
     caption: 'Canais de Comunicação',
     icon: 'mdi-cellphone-wireless',
@@ -365,15 +371,51 @@ const objMenuAdmin = [
     caption: 'Integração sistemas externos',
     icon: 'mdi-call-split',
     routeName: 'api-service'
+  },
+  {
+    title: 'Billing',
+    caption: 'Gestão de planos e assinaturas',
+    icon: 'mdi-currency-usd',
+    routeName: 'billing'
+  },
+  {
+    title: 'Meu Plano',
+    caption: 'Consumo e informações de plano',
+    icon: 'mdi-chart-box',
+    routeName: 'my-plan'
   }
 ]
 
 const superMenu = [
   {
+    title: 'Dashboard',
+    caption: 'Controle granular de empresas',
+    icon: 'mdi-view-dashboard-variant',
+    routeName: 'super-admin-dashboard'
+  },
+  {
     title: 'Empresas',
     caption: 'Admin das Empresas',
     icon: 'mdi-office-building',
-    routeName: 'empresassuper'
+    routeName: 'super-empresas'
+  },
+  {
+    title: 'Integrações',
+    caption: 'Integração com ERPs',
+    icon: 'mdi-plug-outline',
+    routeName: 'super-integrations'
+  },
+  {
+    title: 'Planos',
+    caption: 'Gerenciar planos de assinatura',
+    icon: 'mdi-layers-multiple',
+    routeName: 'super-plans'
+  },
+  {
+    title: 'Faturamento',
+    caption: 'Receita e assinaturas',
+    icon: 'mdi-currency-usd',
+    routeName: 'super-billing'
   },
   {
     title: 'Usuarios',
@@ -612,6 +654,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .q-img__image {
   background-size: contain;

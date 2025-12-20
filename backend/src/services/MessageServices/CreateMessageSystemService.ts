@@ -90,13 +90,16 @@ const downloadMedia = async (msg: any): Promise<any> => {
         })
         .on("error", (error: any) => {
           console.error("ERROR DONWLOAD", error);
-          fs.rmdirSync(mediaPath, { recursive: true });
+          // CORREÇÃO AQUI
+          if (fs.existsSync(mediaPath)) {
+            fs.unlinkSync(mediaPath);
+          }
           reject(new Error(error));
         });
     });
     return mediaData;
-  } catch (error) {
-    if (error.response.status === 404) {
+  } catch (error: any) {
+    if (error.response?.status === 404) {
       const payload = {
         ack: -1,
         body: msg.body,
@@ -119,6 +122,7 @@ const downloadMedia = async (msg: any): Promise<any> => {
     throw new Error(error);
   }
 };
+
 
 const CreateMessageSystemService = async ({
   msg,
@@ -211,7 +215,7 @@ const CreateMessageSystemService = async ({
             mediaUrl: media.filename,
             mediaType:
               media.mediaType ||
-              media.mimetype.substr(0, media.mimetype.indexOf("/"))
+              media.mimetype.substring(0, media.mimetype.indexOf("/"))
           });
 
           const messageCreated = await Message.findByPk(msgCreated.id, {
@@ -236,7 +240,8 @@ const CreateMessageSystemService = async ({
 
           await ticket.update({
             lastMessage: messageCreated.body,
-            lastMessageAt: new Date().getTime()
+            lastMessageAt: new Date().getTime(),
+            answered: true
           });
 
           socketEmit({

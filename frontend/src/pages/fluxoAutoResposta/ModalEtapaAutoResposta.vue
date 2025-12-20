@@ -92,6 +92,7 @@
 </template>
 
 <script>
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 
 import { CriarEtapaResposta, EditarEtapaResposta } from 'src/service/autoResposta'

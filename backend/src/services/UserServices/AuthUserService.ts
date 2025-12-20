@@ -24,8 +24,7 @@ const AuthUserService = async ({
   password
 }: Request): Promise<Response> => {
   const user = await User.findOne({
-    where: { email },
-    include: [{ model: Queue, as: "queues" }]
+    where: { email }
   });
 
   if (!user) {
@@ -36,11 +35,11 @@ const AuthUserService = async ({
     throw new AppError("ERR_INVALID_CREDENTIALS", 401);
   }
 
-  const tenant = await Tenant.findOne({ where: { id: user.tenantId } });
-
-  if (!tenant || tenant.status !== "active") {
-    throw new AppError("ERR_COMPANY_NOT_ACTIVE", 401);
-  }
+  // TODO: Validação de tenant desabilitada temporariamente
+  // const tenant = await Tenant.findOne({ where: { id: user.tenantId } });
+  // if (!tenant || tenant.status !== "active") {
+  //   throw new AppError("ERR_COMPANY_NOT_ACTIVE", 401);
+  // }
 
   const token = createAccessToken(user);
   const refreshToken = createRefreshToken(user);

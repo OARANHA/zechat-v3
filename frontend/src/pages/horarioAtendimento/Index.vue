@@ -1,25 +1,29 @@
 <template>
   <div v-if="userProfile === 'admin'">
-    <q-card
-      class="q-ma-sm "
-      square
-    >
+    <q-card class="q-ma-sm" square>
       <div class="text-h5 q-pa-sm q-ma-sm">
         Horário de Atendimento
         <q-icon name="help">
-          <q-tooltip content-class="bg-light-blue-1 text-black q-pa-sm shadow-4">
-            <span class="text-weight-medium"> Tipos de horário: </span>
+          <q-tooltip
+            content-class="bg-light-blue-1 text-black q-pa-sm shadow-4"
+          >
+            <span class="text-weight-medium">Tipos de horário:</span>
             <span class="row col">
-              Aberto: Estabelecimento aberto durante todo o dia. Não será feito envio de mensagem de ausência;
+              Aberto: Estabelecimento aberto durante todo o dia. Não será feito
+              envio de mensagem de ausência;
             </span>
             <span class="row col">
-              Fechado: Estabelecimento fechado durante todo o dia. Será feito envio de mensagem de ausência, independente do horário;
+              Fechado: Estabelecimento fechado durante todo o dia. Será feito
+              envio de mensagem de ausência, independente do horário;
             </span>
             <span class="row col">
-              Horário: Representa o horário de funcionamento do estabelecimento. O sistema enviará mensagem de ausênica quando mensagens forem recebidas fora dos horários estabelecidos.
+              Horário: Representa o horário de funcionamento do estabelecimento.
+              O sistema enviará mensagem de ausênica quando mensagens forem
+              recebidas fora dos horários estabelecidos.
             </span>
             <span class="row col">
-              **Importante: A mensagem de ausência será enviada após o encerramento do atendimento automático.
+              Importante: A mensagem de ausência será enviada após o
+              encerramento do atendimento automático.
             </span>
           </q-tooltip>
         </q-icon>
@@ -32,7 +36,9 @@
           @click="salvarHorariosAtendimento"
         />
       </div>
+
       <q-separator />
+
       <q-card-section>
         <div class="row q-col-gutter-sm">
           <div
@@ -40,15 +46,13 @@
             v-for="dia in businessHours"
             :key="dia.value"
           >
-            <q-card
-              square
-              bordered
-              flat
-            >
+            <q-card square bordered flat>
               <div class="text-body1 text-bold bg-grey-3 q-pa-xs q-pl-sm">
                 {{ dia.label }}
               </div>
+
               <q-separator />
+
               <q-card-section class="q-pt-none">
                 <q-option-group
                   inline
@@ -83,6 +87,7 @@
                     v-model="dia.hr2"
                   />
                 </div>
+
                 <div class="row items-baseline q-gutter-sm">
                   <q-input
                     :disable="dia.type !== 'H'"
@@ -114,6 +119,7 @@
         </div>
       </q-card-section>
     </q-card>
+
     <q-card class="q-ma-sm q-mt-md full-full-height">
       <div class="text-h6 q-pa-sm q-ma-sm">
         Mensagem de Ausência
@@ -125,26 +131,14 @@
           @click="salvarMensagemAusencia"
         />
       </div>
+
       <q-card-section class="q-pt-none">
         <div class="row items-center">
           <div class="col-xs-3 col-sm-2 col-md-1">
-            <q-btn
-              round
-              flat
-              class="q-ml-sm"
-            >
-              <q-icon
-                size="2em"
-                name="mdi-emoticon-happy-outline"
-              />
-              <q-tooltip>
-                Emoji
-              </q-tooltip>
-              <q-menu
-                anchor="top right"
-                self="bottom middle"
-                :offset="[5, 40]"
-              >
+            <q-btn round flat class="q-ml-sm">
+              <q-icon size="2em" name="mdi-emoticon-happy-outline" />
+              <q-tooltip>Emoji</q-tooltip>
+              <q-menu anchor="top right" self="bottom middle" :offset="[5, 40]">
                 <VEmojiPicker
                   style="width: 40vw"
                   :showSearch="false"
@@ -155,38 +149,33 @@
                 />
               </q-menu>
             </q-btn>
-            <q-btn round
-            flat
-            dense>
-            <q-icon size="2em"
-              name="mdi-variable" />
-            <q-tooltip>
-              Variáveis
-            </q-tooltip>
-            <q-menu touch-position>
-              <q-list dense
-                style="min-width: 100px">
-                <q-item v-for="variavel in variaveis"
-                  :key="variavel.label"
-                  clickable
-                  @click="onInsertSelectVariable(variavel.value)"
-                  v-close-popup>
-                  <q-item-section>{{ variavel.label }}</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
+
+            <q-btn round flat dense>
+              <q-icon size="2em" name="mdi-variable" />
+              <q-tooltip>Variáveis</q-tooltip>
+              <q-menu touch-position>
+                <q-list dense style="min-width: 100px">
+                  <q-item
+                    v-for="variavel in variaveis"
+                    :key="variavel.label"
+                    clickable
+                    @click="onInsertSelectVariable(variavel.value)"
+                    v-close-popup
+                  >
+                    <q-item-section>{{ variavel.label }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
           </div>
+
           <div class="col-xs-8 col-sm-10 col-md-11 q-pl-sm">
             <textarea
               ref="inputEnvioMensagem"
-              style="min-height: 9vh; max-height: 9vh;"
+              style="min-height: 9vh; max-height: 9vh"
               class="q-pa-sm bg-white rounded-all full-width"
               placeholder="Digite a mensagem"
-              autogrow
-              dense
-              outlined
-              @input="(v) => messageBusinessHours = v.target.value"
+              @input="(v) => (messageBusinessHours = v.target.value)"
               :value="messageBusinessHours"
             />
           </div>
@@ -197,8 +186,14 @@
 </template>
 
 <script>
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
-import { MostrarHorariosAtendiemento, AtualizarHorariosAtendiemento, AtualizarMensagemHorariosAtendiemento } from 'src/service/empresas'
+import {
+  MostrarHorariosAtendiemento,
+  AtualizarHorariosAtendiemento,
+  AtualizarMensagemHorariosAtendiemento
+} from 'src/service/empresas'
+
 export default {
   name: 'HorarioAtendimento',
   components: { VEmojiPicker },
@@ -215,13 +210,69 @@ export default {
         { label: 'Saudação', value: '{{greeting}}' }
       ],
       businessHours: [
-        { day: 0, label: 'Domingo', type: 'O', hr1: '08:00', hr2: '12:00', hr3: '14:00', hr4: '18:00' },
-        { day: 1, label: 'Segunda-Feira', type: 'O', hr1: '08:00', hr2: '12:00', hr3: '14:00', hr4: '18:00' },
-        { day: 2, label: 'Terça-Feira', type: 'O', hr1: '08:00', hr2: '12:00', hr3: '14:00', hr4: '18:00' },
-        { day: 3, label: 'Quarta-Feira', type: 'O', hr1: '08:00', hr2: '12:00', hr3: '14:00', hr4: '18:00' },
-        { day: 4, label: 'Quinta-Feira', type: 'O', hr1: '08:00', hr2: '12:00', hr3: '14:00', hr4: '18:00' },
-        { day: 5, label: 'Sexta-Feira', type: 'O', hr1: '08:00', hr2: '12:00', hr3: '14:00', hr4: '18:00' },
-        { day: 6, label: 'Sábado', type: 'O', hr1: '08:00', hr2: '12:00', hr3: '14:00', hr4: '18:00' }
+        {
+          day: 0,
+          label: 'Domingo',
+          type: 'O',
+          hr1: '08:00',
+          hr2: '12:00',
+          hr3: '14:00',
+          hr4: '18:00'
+        },
+        {
+          day: 1,
+          label: 'Segunda-Feira',
+          type: 'O',
+          hr1: '08:00',
+          hr2: '12:00',
+          hr3: '14:00',
+          hr4: '18:00'
+        },
+        {
+          day: 2,
+          label: 'Terça-Feira',
+          type: 'O',
+          hr1: '08:00',
+          hr2: '12:00',
+          hr3: '14:00',
+          hr4: '18:00'
+        },
+        {
+          day: 3,
+          label: 'Quarta-Feira',
+          type: 'O',
+          hr1: '08:00',
+          hr2: '12:00',
+          hr3: '14:00',
+          hr4: '18:00'
+        },
+        {
+          day: 4,
+          label: 'Quinta-Feira',
+          type: 'O',
+          hr1: '08:00',
+          hr2: '12:00',
+          hr3: '14:00',
+          hr4: '18:00'
+        },
+        {
+          day: 5,
+          label: 'Sexta-Feira',
+          type: 'O',
+          hr1: '08:00',
+          hr2: '12:00',
+          hr3: '14:00',
+          hr4: '18:00'
+        },
+        {
+          day: 6,
+          label: 'Sábado',
+          type: 'O',
+          hr1: '08:00',
+          hr2: '12:00',
+          hr3: '14:00',
+          hr4: '18:00'
+        }
       ],
       messageBusinessHours: null
     }
@@ -229,55 +280,87 @@ export default {
   methods: {
     onInsertSelectVariable (variable) {
       const self = this
-      var tArea = this.$refs.inputEnvioMensagem
-      // get cursor's position:
-      var startPos = tArea.selectionStart,
-        endPos = tArea.selectionEnd,
-        cursorPos = startPos,
-        tmpStr = tArea.value
-      // filter:
+      const tArea = this.$refs.inputEnvioMensagem
+      const startPos = tArea.selectionStart
+      const endPos = tArea.selectionEnd
+      const cursorPos = startPos
+      const tmpStr = tArea.value
+
       if (!variable) {
         return
       }
-      // insert:
+
       self.txtContent = this.messageBusinessHours
-      self.txtContent = tmpStr.substring(0, startPos) + variable + tmpStr.substring(endPos, tmpStr.length)
+      self.txtContent =
+        tmpStr.substring(0, startPos) +
+        variable +
+        tmpStr.substring(endPos, tmpStr.length)
       this.messageBusinessHours = self.txtContent
-      // move cursor:
+
       setTimeout(() => {
         tArea.selectionStart = tArea.selectionEnd = cursorPos + 1
       }, 10)
     },
+
     onInsertSelectEmoji (emoji) {
       const self = this
-      var tArea = this.$refs.inputEnvioMensagem
-      // get cursor's position:
-      var startPos = tArea.selectionStart,
-        endPos = tArea.selectionEnd,
-        cursorPos = startPos,
-        tmpStr = tArea.value
-      // filter:
+      const tArea = this.$refs.inputEnvioMensagem
+      const startPos = tArea.selectionStart
+      const endPos = tArea.selectionEnd
+      const cursorPos = startPos
+      const tmpStr = tArea.value
+
       if (!emoji.data) {
         return
       }
-      // insert:
+
       self.txtContent = this.messageBusinessHours
-      self.txtContent = tmpStr.substring(0, startPos) + emoji.data + tmpStr.substring(endPos, tmpStr.length)
+      self.txtContent =
+        tmpStr.substring(0, startPos) +
+        emoji.data +
+        tmpStr.substring(endPos, tmpStr.length)
       this.messageBusinessHours = self.txtContent
-      // move cursor:
+
       setTimeout(() => {
-        tArea.selectionStart = tArea.selectionEnd = cursorPos + emoji.data.length
+        tArea.selectionStart = tArea.selectionEnd =
+          cursorPos + emoji.data.length
       }, 10)
     },
+
     async listarMensagemHorariosAtendimento () {
-      const { data } = await MostrarHorariosAtendiemento()
-      this.businessHours = data.businessHours
-      this.messageBusinessHours = data.messageBusinessHours
+      try {
+        console.log('🔍 Buscando horários de atendimento...')
+        const { data } = await MostrarHorariosAtendiemento()
+        console.log('📊 Dados recebidos:', data)
+        console.log('📊 businessHours:', data.businessHours)
+        console.log('📊 messageBusinessHours:', data.messageBusinessHours)
+        // Verificar se os dados existem antes de atribuir
+        if (data.businessHours && data.messageBusinessHours) {
+          this.businessHours = data.businessHours
+          this.messageBusinessHours = data.messageBusinessHours
+          console.log('✅ Horários carregados:', this.businessHours)
+          console.log('✅ Mensagem carregada:', this.messageBusinessHours)
+        } else {
+          console.warn('⚠️ Dados não encontrados no backend')
+          this.businessHours = data.businessHours || []
+          this.messageBusinessHours = data.messageBusinessHours || ''
+          console.log('⚠️ Usando valores padrão')
+        }
+      } catch (error) {
+        console.error('❌ Erro ao carregar horários:', error)
+        this.$q.notify({
+          type: 'negative',
+          message: 'Erro ao carregar horários de atendimento',
+          position: 'top'
+        })
+      }
     },
+
     async salvarHorariosAtendimento () {
       const { data } = await AtualizarHorariosAtendiemento(this.businessHours)
       this.businessHours = data.businessHours
     },
+
     async salvarMensagemAusencia () {
       const { data } = await AtualizarMensagemHorariosAtendiemento({
         messageBusinessHours: this.messageBusinessHours
@@ -285,12 +368,23 @@ export default {
       this.messageBusinessHours = data.messageBusinessHours
     }
   },
+
   mounted () {
     this.userProfile = localStorage.getItem('profile')
+
+    if (this.userProfile !== 'admin' && this.userProfile !== 'super') {
+      this.$q.notify({
+        type: 'negative',
+        message: 'Apenas administradores podem acessar esta página',
+        position: 'top'
+      })
+      this.$router.push({ name: 'atendimento' })
+      return
+    }
+
     this.listarMensagemHorariosAtendimento()
   }
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

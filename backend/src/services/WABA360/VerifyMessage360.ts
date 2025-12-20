@@ -1,5 +1,6 @@
 import Contact from "../../models/Contact";
 import Ticket from "../../models/Ticket";
+import { WabaMessage } from "../../@types";
 import CreateMessageService from "../MessageServices/CreateMessageService";
 
 const VerifyMessage360 = async (

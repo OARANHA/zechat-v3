@@ -9,7 +9,7 @@ import {
 } from "instagram-private-api";
 import { IgApiClientMQTT } from "instagram_mqtt";
 import { join } from "path";
-import sharp from "sharp";
+// import sharp from "sharp"; // TODO: remover sharp ou re-instalar dependência
 import SetTicketMessagesAsRead from "../../helpers/SetTicketMessagesAsRead";
 import socketEmit from "../../helpers/socketEmit";
 import Message from "../../models/Message";
@@ -54,9 +54,10 @@ const InstagramSendMessagesSystem = async (
         });
       }
       if (message.mediaType === "image") {
-        const photo = await sharp(file).jpeg().toBuffer();
+        // TODO: processar imagem sem sharp
+        // const photo = await sharp(file).jpeg().toBuffer();
         sendedMessage = await threadEntity.broadcastPhoto({
-          file: photo
+          file: file
         });
       }
       if (message.mediaType === "video") {

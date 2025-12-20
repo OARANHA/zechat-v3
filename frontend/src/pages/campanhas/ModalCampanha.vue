@@ -399,6 +399,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 import axios from 'axios'
 import cMolduraCelular from 'src/components/cMolduraCelular'

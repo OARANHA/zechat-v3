@@ -8,7 +8,7 @@ import backendErrors from './erros'
 import { RefreshToken } from './login'
 
 const service = axios.create({
-  baseURL: '', // Usar URLs relativas para o nginx fazer proxy
+  baseURL: '/api', // Usar URLs relativas para o nginx fazer proxy
   timeout: 20000
 })
 
@@ -58,9 +58,8 @@ service.interceptors.request.use(
     // const u = new RegExp('id_unidade_negocio', 'g')
     // config.url = url.replace(u, id_unidade_negocio)
     const tokenAuth = JSON.parse(localStorage.getItem('token'))
-    const token = 'Bearer ' + tokenAuth
+    const token = tokenAuth ? 'Bearer ' + tokenAuth : null
     if (token) {
-      // config.headers['Authorization'] = 'Bearer ' + token
       config.headers.Authorization = token
     }
     return config

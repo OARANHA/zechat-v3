@@ -35,7 +35,7 @@ const getTenantmaxConnections = async (tenantId: string): Promise<number> => {
     }
     return tenant.maxConnections;
   } catch (error) {
-    throw new AppError("Error fetching maxTenants", 500);
+    throw new AppError("Error fetching maxConnections", 500);
   }
 };
 

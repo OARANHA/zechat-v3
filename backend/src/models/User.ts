@@ -22,6 +22,7 @@ import Queue from "./Queue";
 import UsersQueues from "./UsersQueues";
 import Tenant from "./Tenant";
 import Contact from "./Contact";
+import UserRole from "./UserRole";
 
 @Table
 class User extends Model<User> {
@@ -61,6 +62,9 @@ class User extends Model<User> {
 
   @HasMany(() => Ticket)
   tickets: Ticket[];
+
+  @HasMany(() => UserRole, { foreignKey: 'userId' })
+  userRoles?: UserRole[];
 
   @BelongsToMany(() => Queue, () => UsersQueues, "userId", "queueId")
   queues: Queue[];
@@ -102,7 +106,7 @@ class User extends Model<User> {
   };
 
   public checkPassword = async (password: string): Promise<boolean> => {
-    return compare(password, this.getDataValue("passwordHash"));
+    return compare(password, this.passwordHash);
   };
 }
 

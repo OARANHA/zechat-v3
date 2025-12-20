@@ -1,5 +1,13 @@
 import request from 'src/service/request'
 
+/**
+ * Serviços de Estatísticas
+ *
+ * IMPORTANTE:
+ * - As rotas do backend estão montadas em routes.use('/api/statistics', statisticsRoutes)
+ * - Portanto, todos os endpoints públicos começam com /api/statistics/...
+ */
+
 export function ConsultarTicketsQueuesService (params) {
   return request({
     url: '/statistics/dash-tickets-queues',

@@ -14,6 +14,8 @@ import AdminCreateUserService from "../services/AdminServices/AdminCreateUserSer
 import AdminUpdateTenantService from "../services/AdminServices/AdminUpdateTenentService";
 import AdminCreateTenantService from "../services/AdminServices/AdminCreateTenantService";
 import AdminDeleteTenantService from "../services/AdminServices/AdminDeleteTenantService";
+import AdminListTenantsWithConsumptionService from "../services/AdminServices/AdminListTenantsWithConsumptionService";
+import AdminGetGlobalMetricsService from "../services/AdminServices/AdminGetGlobalMetricsService";
 
 type IndexQuery = {
   searchParam: string;
@@ -216,6 +218,30 @@ export const storeUser = async (req: Request, res: Response): Promise<Response> 
       return res.status(400).json({ error: error.message });
     }
     throw error;
+  }
+};
+
+export const getDashboardMetrics = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const metrics = await AdminGetGlobalMetricsService();
+    return res.status(200).json(metrics);
+  } catch (error) {
+    throw new AppError("Erro ao obter métricas do dashboard", 500);
+  }
+};
+
+export const getTenantsWithConsumption = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const tenants = await AdminListTenantsWithConsumptionService();
+    return res.status(200).json(tenants);
+  } catch (error) {
+    throw new AppError("Erro ao listar tenants com consumo", 500);
   }
 };
 

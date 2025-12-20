@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2018",
     "module": "commonjs",
     "outDir": "./dist",
-    "strict": true,
-    "noImplicitAny": false,
-    "strictPropertyInitialization": false,
+  "strict": false,
+  "noImplicitAny": false,
+  "strictPropertyInitialization": false,
+  "skipLibCheck": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -14,10 +15,19 @@
     "sourceMap": true,
     "rootDir": "./src",
     "resolveJsonModule": true,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "lib": ["es2018", "es2017", "es2015", "es6"],
+    "types": ["node"],
+    "moduleResolution": "node"
   },
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "dist",
-    "public"
+    "public",
+    "scripts",
+    "node_modules",
+    "src/__tests__"
   ]
 }

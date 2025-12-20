@@ -7,6 +7,12 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/dashboard/Index.vue') },
       { path: '/home', name: 'home-dashboard', component: () => import('pages/dashboard/Index.vue') },
+      { path: '/admin-dashboard', name: 'admin-dashboard', component: () => import('pages/dashboard/AdminDashboard.vue'), meta: { requiresAuth: true, requiresAdmin: true } },
+      { path: '/super-admin-dashboard', name: 'super-admin-dashboard', component: () => import('pages/dashboard/SuperAdminDashboard.vue'), meta: { requiresAuth: true, requiresSuper: true } },
+      { path: '/super-integrations', name: 'super-integrations', component: () => import('pages/super/SuperIntegrations.vue'), meta: { requiresAuth: true, requiresSuper: true } },
+      { path: '/super-plans', name: 'super-plans', component: () => import('pages/super/SuperPlans.vue'), meta: { requiresAuth: true, requiresSuper: true } },
+      { path: '/super-billing', name: 'super-billing', component: () => import('pages/super/SuperBilling.vue'), meta: { requiresAuth: true, requiresSuper: true } },
+      { path: '/super-empresas', name: 'super-empresas', component: () => import('pages/super/SuperEmpresas.vue'), meta: { requiresAuth: true, requiresSuper: true } },
       { path: '/painel-atendimentos', name: 'painel-atendimentos', component: () => import('pages/dashboard/DashTicketsFilas.vue') },
       { path: '/sessoes', name: 'sessoes', component: () => import('pages/sessaoWhatsapp/Index.vue') },
       { path: '/contatos', name: 'contatos', component: () => import('pages/contatos/Index.vue') },
@@ -22,7 +28,19 @@ const routes = [
       { path: '/api-service', name: 'api-service', component: () => import('pages/api/Index.vue') },
       { path: '/sessaosuper', name: 'sessaosuper', component: () => import('pages/sessaosuper/Index.vue') },
       { path: '/usuariossuper', name: 'usuariossuper', component: () => import('pages/usuariossuper/Index.vue') },
-      { path: '/empresassuper', name: 'empresassuper', component: () => import('pages/empresassuper/Index.vue') },
+      { path: '/empresassuper', name: 'empresassuper', component: () => import('pages/super/SuperEmpresas.vue'), meta: { requiresAuth: true, requiresSuper: true } },
+      {
+        path: '/billing',
+        name: 'billing',
+        component: () => import('pages/billing/Dashboard.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
+      },
+      {
+        path: '/my-plan',
+        name: 'my-plan',
+        component: () => import('pages/billing/MyPlan.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true }
+      },
       {
         path: '/chat-flow',
         component: () => import('pages/chatFlow/Index.vue'),

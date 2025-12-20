@@ -155,6 +155,7 @@
 <script>
 const userId = +localStorage.getItem('userId')
 import { CriarAcaoEtapa, EditarAcaoEtapa } from 'src/service/autoResposta'
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 
 export default {

@@ -40,7 +40,7 @@ const AdminListUsersService = async ({
       { model: Queue, attributes: ["id", "queue"] },
       { model: Tenant, attributes: ["id", "name"] }
     ],
-    attributes: ["name", "id", "email", "profile"],
+    attributes: ["name", "id", "email", "profile", "tenantId"],
     limit,
     offset,
     distinct: true,

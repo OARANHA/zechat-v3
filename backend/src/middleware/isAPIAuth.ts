@@ -26,8 +26,11 @@ const isAPIAuth = (req: Request, res: Response, next: NextFunction): void => {
     const { apiId, sessionId, tenantId } = decoded as TokenPayload;
 
     req.APIAuth = {
+      id: apiId,
+      name: `API_${apiId}`,
+      token: "",
+      sessionId: sessionId.toString(),
       apiId,
-      sessionId,
       tenantId
     };
   } catch (err) {

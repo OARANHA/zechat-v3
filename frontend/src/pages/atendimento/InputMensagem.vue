@@ -405,6 +405,7 @@ import { LocalStorage, uid } from 'quasar'
 import mixinCommon from './mixinCommon'
 import { EnviarMensagemTexto } from 'src/service/tickets'
 import { EnviarMensagemHub } from 'src/service/hub'
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 import { mapGetters } from 'vuex'
 import RecordingTimer from './RecordingTimer'

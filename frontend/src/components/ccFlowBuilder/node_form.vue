@@ -761,6 +761,7 @@
 import { uid } from 'quasar'
 import MessageField from './messageField'
 import MediaField from './mediaField.vue'
+// @ts-ignore
 import { VEmojiPicker } from 'v-emoji-picker'
 export default {
   components: {

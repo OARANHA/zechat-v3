@@ -5,7 +5,11 @@ import { join } from "path";
 import AppError from "../../errors/AppError";
 import Ticket from "../../models/Ticket";
 import Whatsapp from "../../models/Whatsapp";
+import { WabaMessage } from "../../@types";
 import { logger } from "../../utils/logger";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface Request {
   channel: Whatsapp;

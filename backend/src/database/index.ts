@@ -26,21 +26,34 @@ import ApiMessage from "../models/ApiMessage";
 import LogTicket from "../models/LogTicket";
 import ChatFlow from "../models/ChatFlow";
 import Plan, { TenantPlan } from "../models/Plan";
+import ERPProvider from "../models/ERPProvider";
+import Subscription from "../models/Subscription";
+import Role from "../models/Role";
+import Permission from "../models/Permission";
+import UserRole from "../models/UserRole";
+import RolePermission from "../models/RolePermission";
+import ERPWebhookLog from "../models/ERPWebhookLog";
 import * as QueueJobs from "../libs/Queue";
 import { logger } from "../utils/logger";
 
 interface CustomSequelize extends Sequelize {
   afterConnect?: any;
   afterDisconnect?: any;
+  addModels: any;
 }
 
-// eslint-disable-next-line
-const dbConfig = require("../config/database");
-// import dbConfig from "../config/database";
+import dbConfig from "../config/database";
 
-const sequelize: CustomSequelize = new Sequelize(dbConfig);
+const sequelize: CustomSequelize = new Sequelize({
+  ...dbConfig,
+  dialect: "postgres",
+  define: {
+    underscored: false
+  }
+});
 
 const models = [
+  Tenant,
   User,
   Contact,
   Ticket,
@@ -54,7 +67,6 @@ const models = [
   StepsReplyAction,
   Queue,
   UsersQueues,
-  Tenant,
   AutoReplyLogs,
   UserMessagesLog,
   FastReply,
@@ -68,7 +80,14 @@ const models = [
   LogTicket,
   ChatFlow,
   Plan,
-  TenantPlan
+  TenantPlan,
+  ERPProvider,
+  ERPWebhookLog,
+  Subscription,
+  Role,
+  Permission,
+  UserRole,
+  RolePermission
 ];
 
 sequelize.addModels(models);

@@ -10,7 +10,7 @@ import { logger } from "../utils/logger";
 
 interface MessageDataRequest {
   apiId: string;
-  sessionId: number;
+  sessionId: string;
   body: string;
   number: string;
   media?: Express.Multer.File | string;
@@ -34,7 +34,7 @@ export const sendMessageAPI = async (
     }
   });
 
-  if (APIConfig?.sessionId !== sessionId) {
+  if (APIConfig?.sessionId !== Number(sessionId)) {
     throw new AppError("ERR_SESSION_NOT_AUTH_TOKEN", 403);
   }
 
@@ -48,13 +48,13 @@ export const sendMessageAPI = async (
     number,
     media,
     externalKey,
-    tenantId,
+    tenantId: Number(tenantId),
     apiConfig: APIConfig
   };
 
   const schema = Yup.object().shape({
     apiId: Yup.string(),
-    sessionId: Yup.number(),
+    sessionId: Yup.string(),
     body: Yup.string().required(),
     number: Yup.string().required(),
     mediaUrl:
@@ -110,12 +110,12 @@ export const startSession = async (
     }
   });
 
-  if (APIConfig?.sessionId !== sessionId) {
+  if (APIConfig?.sessionId !== Number(sessionId)) {
     throw new AppError("ERR_SESSION_NOT_AUTH_TOKEN", 403);
   }
 
   const whatsapp = await ShowWhatsAppService({
-    id: APIConfig.sessionId,
+    id: Number(APIConfig?.sessionId),
     tenantId,
     isInternal: true
   });
@@ -123,7 +123,7 @@ export const startSession = async (
   try {
     // Usar WhatsAppProvider para verificar status da sessão
     const whatsappProvider = WhatsAppProvider.getInstance();
-    const session = await whatsappProvider.getSession(String(APIConfig.sessionId));
+    const session = await whatsappProvider.getSession(String(APIConfig?.sessionId));
     
     if (!session || session.status !== 'CONNECTED') {
       StartWhatsAppSession(whatsapp);
