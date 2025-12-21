@@ -1,108 +1,97 @@
 import {
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   Model,
-  PrimaryKey,
-  AutoIncrement,
-  DataType,
-  Default,
+  DataTypes,
   ForeignKey,
   BelongsTo,
   HasMany,
-  AllowNull,
-  Index,
-  Validate,
-  Scopes
-} from "sequelize-typescript";
-import Tenant from "./Tenant";
-import UserRole from "./UserRole";
-import RolePermission from "./RolePermission";
+} from 'sequelize-typescript';
+import Tenant from './Tenant';
+import UserRole from './UserRole';
+import RolePermission from './RolePermission';
 
-/**
- * Tipos de status de role
- */
-export type RoleStatus = 'active' | 'inactive' | 'archived';
-
-/**
- * Role Model
- * Representa um papel/perfil no sistema RBAC
- * Permite atribuição de permissões específicas
- */
-@Scopes(() => ({
-  active: {
-    where: { status: 'active' }
-  },
-  byTenant: (tenantId: number) => ({
-    where: { tenantId }
-  }),
-  withPermissions: {
-    include: [RolePermission]
-  },
-  withUsers: {
-    include: [UserRole]
-  }
-}))
 @Table({
   tableName: 'Roles',
-  timestamps: true,
-  underscored: true,
-  paranoid: false,
-  indexes: [
-    { fields: ['tenantId'] },
-    { fields: ['name', 'tenantId'], unique: true },
-    { fields: ['status'] }
-  ]
+  underscored: false,
+  timestamps: false,
 })
-class Role extends Model<Role> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  id!: number;
+export default class Role extends Model {
+  @Column({
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  })
+  id: number;
 
   @ForeignKey(() => Tenant)
-  @Column(DataType.INTEGER)
-  tenantId!: number;
+  @Column({
+    type: DataTypes.INTEGER,
+    field: 'tenantId',
+    allowNull: false,
+  })
+  tenantId: number;
 
-  @BelongsTo(() => Tenant)
-  tenant!: Tenant;
+  @Column({
+    type: DataTypes.STRING(100),
+    field: 'name',
+    allowNull: false,
+  })
+  name: string;
 
-  @Validate({ notEmpty: true })
-  @Column(DataType.STRING(100))
-  name!: string;
+  @Column({
+    type: DataTypes.TEXT,
+    field: 'description',
+    allowNull: true,
+  })
+  description: string;
 
-  @AllowNull(true)
-  @Column(DataType.TEXT)
-  description?: string | null;
+  @Column({
+    type: DataTypes.STRING(20),
+    field: 'status',
+    defaultValue: 'active',
+    allowNull: false,
+  })
+  status: 'active' | 'inactive' | 'archived';
 
-  @Validate({ isIn: [['active', 'inactive', 'archived']] })
-  @Default('active')
-  @Column(DataType.ENUM('active', 'inactive', 'archived'))
-  status!: RoleStatus;
+  @Column({
+    type: DataTypes.BOOLEAN,
+    field: 'isDefault',
+    defaultValue: false,
+    allowNull: false,
+  })
+  isDefault: boolean;
 
-  @Default(false)
-  @Column(DataType.BOOLEAN)
-  isDefault!: boolean;
+  @Column({
+    type: DataTypes.JSON,
+    field: 'metadata',
+    allowNull: true,
+  })
+  metadata: Record<string, any> | null;
 
-  @AllowNull(true)
-  @Column(DataType.JSON)
-  metadata?: Record<string, any> | null;
+  @Column({
+    type: DataTypes.DATE,
+    field: 'createdAt',
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
+  })
+  createdAt: Date;
 
-  @CreatedAt
-  @Column(DataType.DATE)
-  createdAt!: Date;
+  @Column({
+    type: DataTypes.DATE,
+    field: 'updatedAt',
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
+  })
+  updatedAt: Date;
 
-  @UpdatedAt
-  @Column(DataType.DATE)
-  updatedAt!: Date;
+  // Associations
+  @BelongsTo(() => Tenant, 'tenantId')
+  tenant: Tenant;
 
-  // Relacionamentos
-  @HasMany(() => UserRole)
-  userRoles!: UserRole[];
+  @HasMany(() => UserRole, 'roleId')
+  userRoles: UserRole[];
 
-  @HasMany(() => RolePermission)
-  rolePermissions!: RolePermission[];
+  @HasMany(() => RolePermission, 'roleId')
+  rolePermissions: RolePermission[];
 }
-
-export default Role;

@@ -1,140 +1,97 @@
 import {
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   Model,
-  PrimaryKey,
-  AutoIncrement,
-  DataType,
-  Default,
+  DataTypes,
   ForeignKey,
   BelongsTo,
-  AllowNull,
-  Index,
-  Scopes
-} from "sequelize-typescript";
-import Role from "./Role";
-import Permission from "./Permission";
-import Tenant from "./Tenant";
-import User from "./User";
+} from 'sequelize-typescript';
+import Role from './Role';
+import Permission from './Permission';
+import Tenant from './Tenant';
 
-/**
- * RolePermission Model
- * Tabela de junção entre Roles e Permissions
- * Representa atribuição de permissões a roles
- */
-@Scopes(() => ({
-  byRole: (roleId: number) => ({
-    where: { roleId }
-  }),
-  byPermission: (permissionId: number) => ({
-    where: { permissionId }
-  }),
-  byTenant: (tenantId: number) => ({
-    where: { tenantId }
-  }),
-  withRole: {
-    include: [Role]
-  },
-  withPermission: {
-    include: [Permission]
-  },
-  withTenant: {
-    include: [Tenant]
-  },
-  active: {
-    where: {
-      expiresAt: null
-    }
-  },
-  expired: {
-    where: {
-      expiresAt: {
-        $not: null,
-        $lt: new Date()
-      }
-    }
-  }
-}))
 @Table({
   tableName: 'RolePermissions',
-  timestamps: true,
-  underscored: true,
-  paranoid: false,
-  indexes: [
-    { fields: ['roleId'] },
-    { fields: ['permissionId'] },
-    { fields: ['tenantId'] },
-    { fields: ['roleId', 'tenantId'] },
-    { fields: ['permissionId', 'tenantId'] },
-    { fields: ['expiresAt'] }
-  ]
+  underscored: false,
+  timestamps: false,
 })
-class RolePermission extends Model<RolePermission> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  id!: number;
+export default class RolePermission extends Model {
+  @Column({
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  })
+  id: number;
 
   @ForeignKey(() => Role)
-  @Column(DataType.INTEGER)
-  roleId!: number;
-
-  @BelongsTo(() => Role)
-  role!: Role;
+  @Column({
+    type: DataTypes.INTEGER,
+    field: 'roleId',
+    allowNull: false,
+  })
+  roleId: number;
 
   @ForeignKey(() => Permission)
-  @Column(DataType.INTEGER)
-  permissionId!: number;
-
-  @BelongsTo(() => Permission)
-  permission!: Permission;
+  @Column({
+    type: DataTypes.INTEGER,
+    field: 'permissionId',
+    allowNull: false,
+  })
+  permissionId: number;
 
   @ForeignKey(() => Tenant)
-  @Column(DataType.INTEGER)
-  tenantId!: number;
+  @Column({
+    type: DataTypes.INTEGER,
+    field: 'tenantId',
+    allowNull: false,
+  })
+  tenantId: number;
 
-  @BelongsTo(() => Tenant)
-  tenant!: Tenant;
+  @Column({
+    type: DataTypes.INTEGER,
+    field: 'assignedBy',
+    allowNull: true,
+  })
+  assignedBy: number;
 
-  @ForeignKey(() => User)
-  @AllowNull(true)
-  @Column(DataType.INTEGER)
-  assignedBy?: number | null;
+  @Column({
+    type: DataTypes.DATE,
+    field: 'grantedAt',
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
+  })
+  grantedAt: Date;
 
-  @BelongsTo(() => User, 'assignedBy')
-  assignedByUser?: User | null;
+  @Column({
+    type: DataTypes.DATE,
+    field: 'expiresAt',
+    allowNull: true,
+  })
+  expiresAt: Date;
 
-  @Default(() => new Date())
-  @Column(DataType.DATE)
-  grantedAt!: Date;
+  @Column({
+    type: DataTypes.DATE,
+    field: 'createdAt',
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
+  })
+  createdAt: Date;
 
-  @AllowNull(true)
-  @Column(DataType.DATE)
-  expiresAt?: Date | null;
+  @Column({
+    type: DataTypes.DATE,
+    field: 'updatedAt',
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
+  })
+  updatedAt: Date;
 
-  @CreatedAt
-  @Column(DataType.DATE)
-  createdAt!: Date;
+  // Associations
+  @BelongsTo(() => Role, 'roleId')
+  role: Role;
 
-  @UpdatedAt
-  @Column(DataType.DATE)
-  updatedAt!: Date;
+  @BelongsTo(() => Permission, 'permissionId')
+  permission: Permission;
 
-  /**
-   * Getter: Permissão está expirada?
-   */
-  get isExpired(): boolean {
-    return this.expiresAt ? this.expiresAt < new Date() : false;
-  }
-
-  /**
-   * Getter: Permissão está ativa (não expirada)?
-   */
-  get isActive(): boolean {
-    return !this.isExpired;
-  }
+  @BelongsTo(() => Tenant, 'tenantId')
+  tenant: Tenant;
 }
-
-export default RolePermission;
