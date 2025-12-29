@@ -1,0 +1,7 @@
+.data
+.wwebjs_auth
+npm-debug.log
+Dockerfile
+docker-compose.yml
+coverage/
+tests/

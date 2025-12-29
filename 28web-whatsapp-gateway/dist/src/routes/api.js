@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.apiRouter = void 0;
+const express_1 = require("express");
+const WebhookController_1 = require("../controllers/WebhookController");
+const SessionController_1 = require("../controllers/SessionController");
+const apiRouter = (0, express_1.Router)();
+exports.apiRouter = apiRouter;
+apiRouter.use('/sessions', SessionController_1.sessionRouter);
+apiRouter.use('/webhook', WebhookController_1.webhookRouter);
