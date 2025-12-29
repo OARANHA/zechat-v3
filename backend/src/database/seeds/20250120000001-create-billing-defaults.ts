@@ -17,21 +17,21 @@ module.exports = {
         {
           name: "Starter",
           price: 29.9,
-          limits: {
+          limits: JSON.stringify({
             whatsapp_accounts: 2,
             messages_per_month: 1000,
             contacts: 500,
             users: 1
-          },
-          features: {
+          }),
+          features: JSON.stringify({
             whatsapp_integration: true,
             basic_analytics: true,
             auto_replies: true,
             custom_fields: false
-          },
+          }),
           currency: "BRL",
           description: "Plano ideal para pequenos negócios",
-          billingCycle: "monthly", // CamelCase alinhado à migration
+          billingCycle: "monthly",
           status: "active",
           createdAt: new Date(),
           updatedAt: new Date()
@@ -39,20 +39,20 @@ module.exports = {
         {
           name: "Professional",
           price: 79.9,
-          limits: {
+          limits: JSON.stringify({
             whatsapp_accounts: 5,
             messages_per_month: 5000,
             contacts: 2500,
             users: 3
-          },
-          features: {
+          }),
+          features: JSON.stringify({
             whatsapp_integration: true,
             advanced_analytics: true,
             auto_replies: true,
             custom_fields: true,
             integrations: true,
             api_access: true
-          },
+          }),
           currency: "BRL",
           description: "Plano completo para empresas em crescimento",
           billingCycle: "monthly",
@@ -63,13 +63,13 @@ module.exports = {
         {
           name: "Enterprise",
           price: 199.9,
-          limits: {
+          limits: JSON.stringify({
             whatsapp_accounts: 15,
             messages_per_month: 15000,
             contacts: 10000,
             users: 10
-          },
-          features: {
+          }),
+          features: JSON.stringify({
             whatsapp_integration: true,
             advanced_analytics: true,
             auto_replies: true,
@@ -78,7 +78,7 @@ module.exports = {
             api_access: true,
             priority_support: true,
             white_label: true
-          },
+          }),
           currency: "BRL",
           description: "Solução empresarial com recursos ilimitados",
           billingCycle: "monthly",
@@ -87,6 +87,7 @@ module.exports = {
           updatedAt: new Date()
         }
       ]);
+      console.log("Plans inseridos com sucesso.");
     } else {
       console.log(`Pulando inserção de Plans: já existem ${planCount} planos na tabela.`);
     }
@@ -111,14 +112,13 @@ module.exports = {
 
     if (erpProviderCount === 0) {
       const erpProvidersBase = [
-        { tenantIdx: 0, providerType: "vendaerp",    apiKey: "vendaerp_api_key_tenant_1", webhookSecret: "webhook_secret_1", webhookUrl: "https://tenant1.example.com/webhook", status: "active" },
-        { tenantIdx: 1, providerType: "bling",       apiKey: "bling_api_key_tenant_2",    webhookSecret: "webhook_secret_2", webhookUrl: "https://tenant2.example.com/webhook", status: "active" },
-        { tenantIdx: 2, providerType: "omie",        apiKey: "omie_api_key_tenant_3",     webhookSecret: "webhook_secret_3", webhookUrl: "https://tenant3.example.com/webhook", status: "inactive" },
-        { tenantIdx: 3, providerType: "mercadopago", apiKey: "mp_api_key_tenant_4",       webhookSecret: "webhook_secret_4", webhookUrl: "https://tenant4.example.com/webhook", status: "active" }
+        { tenantIdx: 0, providerType: "vendaerp", apiKey: "vendaerp_api_key_tenant_1", webhookSecret: "webhook_secret_1", webhookUrl: "https://tenant1.example.com/webhook", status: "active" },
+        { tenantIdx: 1, providerType: "bling", apiKey: "bling_api_key_tenant_2", webhookSecret: "webhook_secret_2", webhookUrl: "https://tenant2.example.com/webhook", status: "active" },
+        { tenantIdx: 2, providerType: "omie", apiKey: "omie_api_key_tenant_3", webhookSecret: "webhook_secret_3", webhookUrl: "https://tenant3.example.com/webhook", status: "inactive" },
+        { tenantIdx: 3, providerType: "mercadopago", apiKey: "mp_api_key_tenant_4", webhookSecret: "webhook_secret_4", webhookUrl: "https://tenant4.example.com/webhook", status: "active" }
       ];
-    
+
       const erpProviders = erpProvidersBase
-        // só usa se o tenant desse índice existir
         .filter(p => tenants[p.tenantIdx])
         .map(p => ({
           tenantId: tenants[p.tenantIdx].id,
@@ -130,13 +130,15 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date()
         }));
-    
+
       if (erpProviders.length > 0) {
         await queryInterface.bulkInsert("ERPProviders", erpProviders);
         console.log("ERPProviders inseridos com sucesso.");
       } else {
         console.log("Nenhum ERPProvider inserido (nenhum tenant correspondente encontrado).");
       }
+    } else {
+      console.log(`Pulando inserção de ERPProviders: já existem ${erpProviderCount} ERPProviders na tabela.`);
     }
 
     // Obter IDs de Plans e ERPProviders
@@ -193,6 +195,8 @@ module.exports = {
       if (tenantPlans.length > 0) {
         await queryInterface.bulkInsert("TenantPlans", tenantPlans);
         console.log("TenantPlans inseridos com sucesso.");
+      } else {
+        console.log("Nenhum TenantPlan inserido (dados insuficientes).");
       }
     } else {
       console.log(`Pulando inserção de TenantPlans: já existem ${tenantPlanCount} TenantPlans na tabela.`);
@@ -210,17 +214,17 @@ module.exports = {
       const baseDateEnd = new Date("2025-12-31");
 
       const subsBase = [
-        { tenantIdx: 0, planName: "Starter",      invoice: "INV-2025-001", amount: 29.9 },
+        { tenantIdx: 0, planName: "Starter", invoice: "INV-2025-001", amount: 29.9 },
         { tenantIdx: 1, planName: "Professional", invoice: "INV-2025-002", amount: 79.9 },
-        { tenantIdx: 2, planName: "Enterprise",   invoice: "INV-2025-003", amount: 199.9 },
-        { tenantIdx: 3, planName: "Starter",      invoice: "INV-2025-004", amount: 29.9 }
+        { tenantIdx: 2, planName: "Enterprise", invoice: "INV-2025-003", amount: 199.9 },
+        { tenantIdx: 3, planName: "Starter", invoice: "INV-2025-004", amount: 29.9 }
       ];
 
       const subscriptions = subsBase
         .filter(s => tenants[s.tenantIdx] && planIds[s.planName])
         .map(s => {
           const tenantId = tenants[s.tenantIdx].id;
-          const erpProviderId = erpProviderIds[tenantId] ?? erpProviderIds[tenants[s.tenantIdx]?.id || 0];
+          const erpProviderId = erpProviderIds[tenantId];
 
           return {
             tenantId,
@@ -237,11 +241,13 @@ module.exports = {
             updatedAt: new Date()
           };
         })
-        .filter(s => s.erpProviderId); // garante que tem ERPProviders
+        .filter(s => s.erpProviderId);
 
       if (subscriptions.length > 0) {
         await queryInterface.bulkInsert("Subscriptions", subscriptions);
         console.log("Subscriptions inseridas com sucesso.");
+      } else {
+        console.log("Nenhuma Subscription inserida (dados insuficientes).");
       }
     } else {
       console.log(`Pulando inserção de Subscriptions: já existem ${subscriptionCount} Subscriptions na tabela.`);
