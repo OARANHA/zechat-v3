@@ -10,9 +10,19 @@ import Chat from "./socketChat/Chat";
 let io: SocketIO;
 
 export const initIO = (httpServer: Server): SocketIO => {
+  const allowedOrigins = [
+    'http://localhost',
+    'http://localhost:3000',
+    'http://nginx',
+    'http://nginx:80',
+    process.env.FRONTEND_URL || 'https://app.28web.com.br'
+  ];
+
   io = new SocketIO(httpServer, {
     cors: {
-      origin: "*"
+      origin: allowedOrigins,
+      methods: ['GET', 'POST'],
+      credentials: true
     },
     pingTimeout: 180000,
     pingInterval: 60000
@@ -31,10 +41,21 @@ export const initIO = (httpServer: Server): SocketIO => {
 
   io.use(async (socket, next) => {
     try {
-      const token = socket?.handshake?.auth?.token;
+      const auth = socket?.handshake?.auth || {};
+      logger.info({ message: "socket auth received", auth });
+
+      // Accept token from auth.token or from Authorization header
+      const authHeader = (socket?.handshake?.headers?.authorization || "") as string;
+      const headerToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+      const token = auth?.token || headerToken;
+
+      if (!token) {
+        logger.warn({ message: "socket auth missing token", auth, headers: socket?.handshake?.headers });
+        return next(new Error("authentication error"));
+      }
+
       const verify = decodeTokenSocket(token);
       if (verify.isValid) {
-        const auth = socket?.handshake?.auth;
         socket.handshake.auth = {
           ...auth,
           ...verify.data,
@@ -55,13 +76,16 @@ export const initIO = (httpServer: Server): SocketIO => {
           ]
         });
         socket.handshake.auth.user = user;
-        next();
+        logger.info({ message: "socket auth verified", userId: user?.id, tenantId: user?.tenantId });
+        return next();
       }
-      next(new Error("authentication error"));
+
+      logger.warn({ message: "socket auth invalid token", auth });
+      return next(new Error("authentication error"));
     } catch (error) {
-      logger.warn(`tokenInvalid: ${socket}`);
+      logger.warn({ message: "tokenInvalid on socket middleware", error });
       socket.emit(`tokenInvalid:${socket.id}`);
-      next(new Error("authentication error"));
+      return next(new Error("authentication error"));
     }
   });
 

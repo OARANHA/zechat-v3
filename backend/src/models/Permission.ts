@@ -1,122 +1,115 @@
 import {
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   Model,
-  PrimaryKey,
-  AutoIncrement,
   DataType,
-  Default,
   ForeignKey,
   BelongsTo,
   HasMany,
-  AllowNull,
-  Index,
-  Validate,
-  Scopes
-} from "sequelize-typescript";
-import Tenant from "./Tenant";
-import RolePermission from "./RolePermission";
+} from 'sequelize-typescript';
+import Tenant from './Tenant';
+import RolePermission from './RolePermission';
 
-/**
- * Tipos de escopo de permissão
- */
-export type PermissionScope = 'tenant' | 'global' | 'system';
-export type PermissionStatus = 'active' | 'inactive' | 'deprecated';
-
-/**
- * Permission Model
- * Representa uma permissão específica no sistema RBAC
- * Cada permissão pode ser atribuída a múltiplas roles
- */
-@Scopes(() => ({
-  active: {
-    where: { status: 'active' }
-  },
-  byTenant: (tenantId: number) => ({
-    where: { tenantId }
-  }),
-  global: {
-    where: { scope: 'global' }
-  },
-  tenantScoped: {
-    where: { scope: 'tenant' }
-  },
-  withRoles: {
-    include: [RolePermission]
-  }
-}))
 @Table({
   tableName: 'Permissions',
-  timestamps: true,
-  underscored: true,
-  paranoid: false,
-  indexes: [
-    { fields: ['tenantId'] },
-    { fields: ['name', 'tenantId', 'scope'], unique: true },
-    { fields: ['status'] },
-    { fields: ['scope'] }
-  ]
+  underscored: false,
+  timestamps: false,
 })
-class Permission extends Model<Permission> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
+export default class Permission extends Model<Permission> {
+  @Column({
+    type: DataType.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  })
   id!: number;
 
   @ForeignKey(() => Tenant)
-  @Column(DataType.INTEGER)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'tenantId',
+    allowNull: false,
+  })
   tenantId!: number;
 
-  @BelongsTo(() => Tenant)
-  tenant!: Tenant;
-
-  @Validate({ notEmpty: true })
-  @Column(DataType.STRING(100))
+  @Column({
+    type: DataType.STRING(100),
+    field: 'name',
+    allowNull: false,
+    unique: true,
+  })
   name!: string;
 
-  @Validate({ notEmpty: true })
-  @Column(DataType.STRING(200))
-  description!: string;
+  @Column({
+    type: DataType.STRING(200),
+    field: 'description',
+    allowNull: true,
+  })
+  description?: string;
 
-  @Validate({ isIn: [['tenant', 'global', 'system']] })
-  @Default('tenant')
-  @Column(DataType.ENUM('tenant', 'global', 'system'))
-  scope!: PermissionScope;
+  @Column({
+    type: DataType.STRING(50),
+    field: 'scope',
+    defaultValue: 'tenant',
+    allowNull: false,
+  })
+  scope!: 'tenant' | 'global' | 'system';
 
-  @Validate({ isIn: [['active', 'inactive', 'deprecated']] })
-  @Default('active')
-  @Column(DataType.ENUM('active', 'inactive', 'deprecated'))
-  status!: PermissionStatus;
+  @Column({
+    type: DataType.STRING(50),
+    field: 'status',
+    defaultValue: 'active',
+    allowNull: false,
+  })
+  status!: 'active' | 'inactive' | 'deprecated';
 
-  @Validate({ notEmpty: true })
-  @Column(DataType.STRING(100))
-  resource!: string;
+  @Column({
+    type: DataType.STRING(100),
+    field: 'resource',
+    allowNull: true,
+  })
+  resource?: string;
 
-  @Validate({ notEmpty: true })
-  @Column(DataType.STRING(100))
+  @Column({
+    type: DataType.STRING(100),
+    field: 'action',
+    allowNull: false,
+  })
   action!: string;
 
-  @AllowNull(true)
-  @Column(DataType.TEXT)
-  conditions?: string | null;
+  @Column({
+    type: DataType.TEXT,
+    field: 'conditions',
+    allowNull: true,
+  })
+  conditions?: string;
 
-  @AllowNull(true)
-  @Column(DataType.JSON)
+  @Column({
+    type: DataType.JSON,
+    field: 'metadata',
+    allowNull: true,
+  })
   metadata?: Record<string, any> | null;
 
-  @CreatedAt
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+    field: 'createdAt',
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   createdAt!: Date;
 
-  @UpdatedAt
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+    field: 'updatedAt',
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   updatedAt!: Date;
 
-  // Relacionamentos
-  @HasMany(() => RolePermission)
+  // Associations
+  @BelongsTo(() => Tenant, 'tenantId')
+  tenant!: Tenant;
+
+  @HasMany(() => RolePermission, 'permissionId')
   rolePermissions!: RolePermission[];
 }
-
-export default Permission;

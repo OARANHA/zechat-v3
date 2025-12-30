@@ -1,125 +1,97 @@
 import {
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   Model,
-  PrimaryKey,
-  AutoIncrement,
   DataType,
-  Default,
   ForeignKey,
   BelongsTo,
-  AllowNull,
-  Index,
-  Scopes
-} from "sequelize-typescript";
-import User from "./User";
-import Role from "./Role";
-import Tenant from "./Tenant";
+} from 'sequelize-typescript';
+import User from './User';
+import Role from './Role';
+import Tenant from './Tenant';
 
-/**
- * UserRole Model
- * Tabela de junção entre Users e Roles
- * Representa atribuição de roles a usuários
- */
-@Scopes(() => ({
-  active: {
-    where: { isDefault: true }
-  },
-  byUser: (userId: number) => ({
-    where: { userId }
-  }),
-  byRole: (roleId: number) => ({
-    where: { roleId }
-  }),
-  byTenant: (tenantId: number) => ({
-    where: { tenantId }
-  }),
-  withUser: {
-    include: [User]
-  },
-  withRole: {
-    include: [Role]
-  },
-  withTenant: {
-    include: [Tenant]
-  }
-}))
 @Table({
   tableName: 'UserRoles',
-  timestamps: true,
-  underscored: true,
-  paranoid: false,
-  indexes: [
-    { fields: ['userId'] },
-    { fields: ['roleId'] },
-    { fields: ['tenantId'] },
-    { fields: ['userId', 'tenantId'] },
-    { fields: ['expiresAt'] },
-    { fields: ['isDefault'] }
-  ]
+  underscored: false,
+  timestamps: false,
 })
-class UserRole extends Model<UserRole> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
+export default class UserRole extends Model<UserRole> {
+  @Column({
+    type: DataType.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  })
   id!: number;
 
   @ForeignKey(() => User)
-  @Column(DataType.INTEGER)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'userId',
+    allowNull: false,
+  })
   userId!: number;
 
-  @BelongsTo(() => User)
-  user!: User;
-
   @ForeignKey(() => Role)
-  @Column(DataType.INTEGER)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'roleId',
+    allowNull: false,
+  })
   roleId!: number;
 
-  @BelongsTo(() => Role)
-  role!: Role;
-
   @ForeignKey(() => Tenant)
-  @Column(DataType.INTEGER)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'tenantId',
+    allowNull: false,
+  })
   tenantId!: number;
 
-  @BelongsTo(() => Tenant)
-  tenant!: Tenant;
+  @Column({
+    type: DataType.INTEGER,
+    field: 'assignedBy',
+    allowNull: true,
+  })
+  assignedBy?: number;
 
-  @AllowNull(true)
-  @Column(DataType.INTEGER)
-  assignedBy?: number | null;
+  @Column({
+    type: DataType.DATE,
+    field: 'expiresAt',
+    allowNull: true,
+  })
+  expiresAt?: Date;
 
-  @AllowNull(true)
-  @Column(DataType.DATE)
-  expiresAt?: Date | null;
-
-  @Default(false)
-  @Column(DataType.BOOLEAN)
+  @Column({
+    type: DataType.BOOLEAN,
+    field: 'isDefault',
+    defaultValue: false,
+    allowNull: false,
+  })
   isDefault!: boolean;
 
-  @CreatedAt
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+    field: 'createdAt',
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   createdAt!: Date;
 
-  @UpdatedAt
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+    field: 'updatedAt',
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   updatedAt!: Date;
 
-  /**
-   * Getter: Atribuição está expirada?
-   */
-  get isExpired(): boolean {
-    return this.expiresAt ? this.expiresAt < new Date() : false;
-  }
+  // Associations
+  @BelongsTo(() => User, 'userId')
+  user!: User;
 
-  /**
-   * Getter: Atribuição está ativa (não expirada)?
-   */
-  get isActive(): boolean {
-    return !this.isExpired;
-  }
+  @BelongsTo(() => Role, 'roleId')
+  role!: Role;
+
+  @BelongsTo(() => Tenant, 'tenantId')
+  tenant!: Tenant;
 }
-
-export default UserRole;

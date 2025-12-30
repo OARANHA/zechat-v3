@@ -1,156 +1,138 @@
-/**
- * Middleware de validação de limites do plano
- * Bloqueia requisições que excedem os limites do plano do tenant
- * 
- * © 2024 28web. Todos os direitos reservados.
- */
-
 import { Request, Response, NextFunction } from "express";
-import UsageTracker from "../services/BillingServices/UsageTracker";
 import AppError from "../errors/AppError";
 import { logger } from "../utils/logger";
+import UsageService from "../services/BillingServices/UsageService";
 
-interface AuthenticatedRequest extends Omit<Request, 'user'> {
-  user?: {
-    id: string;
-    tenantId: string | number;
-    email: string;
-    profile: string;
+type LimitType = "messages" | "storage" | "users" | "whatsappSessions";
+
+/**
+ * Resolve o tipo de limite a partir da rota HTTP (fallback para retrocompatibilidade).
+ * Preferível usar o middleware parametrizado (checkPlanLimits('messages'|...)) nas rotas específicas.
+ */
+function inferLimitType(req: Request): LimitType | null {
+  const p = (req.path || "").toLowerCase();
+
+  // Uploads/mídias
+  if (p.includes("/upload") && req.method === "POST") return "storage";
+
+  // Envio de mensagens
+  if (p.includes("/messages") && req.method === "POST") return "messages";
+
+  // Criação de usuário
+  if (p.includes("/users") && req.method === "POST") return "users";
+
+  // Sessões WhatsApp (criação/início)
+  if (
+    (p.includes("whatsappsession") || p.includes("/whatsapp-sessions")) &&
+    (req.method === "POST" || req.method === "PUT")
+  ) {
+    return "whatsappSessions";
+  }
+
+  return null;
+}
+
+function throwLimitExceeded(limitType: LimitType, current: number, limit: number): never {
+  const upgradeUrl = "/billing/upgrade";
+  const label = {
+    messages: "mensagens/mês",
+    storage: "armazenamento (bytes)",
+    users: "usuários",
+    whatsappSessions: "sessões WhatsApp"
+  }[limitType];
+
+  throw new AppError(
+    `Limite de ${label} atingido. Faça upgrade do seu plano para continuar.`,
+    403,
+    "PLAN_LIMIT_EXCEEDED",
+    {
+      limitType,
+      current,
+      limit,
+      upgradeUrl
+    }
+  );
+}
+
+/**
+ * Middleware principal (parametrizável).
+ * - Se um limitType for fornecido, valida apenas aquele tipo.
+ * - Caso contrário, tenta inferir a partir do path/method (retrocompatível).
+ */
+export default function checkPlanLimits(limitTypeParam?: LimitType) {
+  return async (req: Request, _res: Response, next: NextFunction) => {
+    try {
+      const tenantId = Number((req as any)?.user?.tenantId);
+      if (!tenantId) {
+        return next(new AppError("Unauthorized", 401));
+      }
+
+      const usageData = await UsageService.getUsage(tenantId);
+      // Disponibiliza snapshot para handlers posteriores (diagnóstico)
+      (req as any).usageData = usageData;
+
+      const limitType = limitTypeParam || inferLimitType(req);
+
+      if (!limitType) {
+        // Nada a validar neste endpoint
+        return next();
+      }
+
+      const { usage, limits } = usageData;
+
+      switch (limitType) {
+        case "messages": {
+          const current = usage.messages || 0;
+          const limit = limits.messagesPerMonth || 0;
+
+          if (limit > 0 && current >= limit) {
+            logger.warn(`Tenant ${tenantId}: limite de mensagens atingido (${current}/${limit})`);
+            throwLimitExceeded("messages", current, limit);
+          }
+          break;
+        }
+
+        case "storage": {
+          const current = usage.storageBytes || 0;
+          const storageLimitBytes = (limits.storageGB || 0) * 1024 * 1024 * 1024;
+
+          if (storageLimitBytes > 0 && current >= storageLimitBytes) {
+            logger.warn(
+              `Tenant ${tenantId}: limite de storage atingido (${current}/${storageLimitBytes} bytes)`
+            );
+            throwLimitExceeded("storage", current, storageLimitBytes);
+          }
+          break;
+        }
+
+        case "users": {
+          const current = usage.users || 0;
+          const limit = limits.users || 0;
+
+          if (limit > 0 && current >= limit) {
+            logger.warn(`Tenant ${tenantId}: limite de usuários atingido (${current}/${limit})`);
+            throwLimitExceeded("users", current, limit);
+          }
+          break;
+        }
+
+        case "whatsappSessions": {
+          const current = usage.whatsappSessions || 0;
+          const limit = limits.whatsappSessions || 0;
+
+          if (limit > 0 && current >= limit) {
+            logger.warn(
+              `Tenant ${tenantId}: limite de sessões WhatsApp atingido (${current}/${limit})`
+            );
+            throwLimitExceeded("whatsappSessions", current, limit);
+          }
+          break;
+        }
+      }
+
+      return next();
+    } catch (err) {
+      return next(err);
+    }
   };
-}
-
-/**
- * Middleware que valida limites do plano antes de processar requisições
- */
-export async function checkPlanLimits(
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
-  try {
-    // Se não há usuário autenticado, pula validação
-    if (!req.user || !req.user.tenantId) {
-      return next();
-    }
-
-    const tenantId = req.user.tenantId;
-    const usageData = await UsageTracker.getUsage(tenantId);
-
-    // Valida limite de mensagens para rotas de envio
-    if (req.path.includes("/messages") && (req.method === "POST" || req.method === "PUT")) {
-      if (usageData.usage.messages >= usageData.limits.messagesPerMonth) {
-        logger.warn(
-          `Tenant ${tenantId}: Tentativa de enviar mensagem com limite excedido (${usageData.usage.messages}/${usageData.limits.messagesPerMonth})`
-        );
-        throw new AppError(
-          "Limite mensal de mensagens atingido. Faça upgrade do seu plano para continuar.",
-          403,
-          "PLAN_LIMIT_EXCEEDED",
-          {
-            limitType: "messages",
-            current: usageData.usage.messages,
-            limit: usageData.limits.messagesPerMonth,
-            upgradeUrl: "/billing/upgrade"
-          }
-        );
-      }
-    }
-
-    // Valida limite de storage para uploads
-    if (req.path.includes("/upload") && req.method === "POST") {
-      const storageGB = usageData.limits.storageGB * 1024 * 1024 * 1024;
-      if (usageData.usage.storage >= storageGB) {
-        logger.warn(
-          `Tenant ${tenantId}: Tentativa de upload com limite de storage excedido (${usageData.usage.storage}/${storageGB} bytes)`
-        );
-        throw new AppError(
-          "Limite de armazenamento atingido. Faça upgrade do seu plano para continuar.",
-          403,
-          "PLAN_LIMIT_EXCEEDED",
-          {
-            limitType: "storage",
-            current: usageData.usage.storage,
-            limit: storageGB,
-            upgradeUrl: "/billing/upgrade"
-          }
-        );
-      }
-    }
-
-    // Valida limite de usuários para criação de usuários
-    if (req.path.includes("/users") && req.method === "POST") {
-      if (usageData.usage.users >= usageData.limits.users) {
-        logger.warn(
-          `Tenant ${tenantId}: Tentativa de criar usuário com limite excedido (${usageData.usage.users}/${usageData.limits.users})`
-        );
-        throw new AppError(
-          `Limite de usuários atingido (${usageData.limits.users}). Faça upgrade do seu plano para adicionar mais usuários.`,
-          403,
-          "PLAN_LIMIT_EXCEEDED",
-          {
-            limitType: "users",
-            current: usageData.usage.users,
-            limit: usageData.limits.users,
-            upgradeUrl: "/billing/upgrade"
-          }
-        );
-      }
-    }
-
-    // Valida limite de sessões WhatsApp
-    if (req.path.includes("/whatsapps") && req.method === "POST") {
-      if (usageData.usage.whatsappSessions >= usageData.limits.whatsappSessions) {
-        logger.warn(
-          `Tenant ${tenantId}: Tentativa de criar sessão WhatsApp com limite excedido (${usageData.usage.whatsappSessions}/${usageData.limits.whatsappSessions})`
-        );
-        throw new AppError(
-          `Limite de sessões WhatsApp atingido (${usageData.limits.whatsappSessions}). Faça upgrade do seu plano para adicionar mais sessões.`,
-          403,
-          "PLAN_LIMIT_EXCEEDED",
-          {
-            limitType: "whatsappSessions",
-            current: usageData.usage.whatsappSessions,
-            limit: usageData.limits.whatsappSessions,
-            upgradeUrl: "/billing/upgrade"
-          }
-        );
-      }
-    }
-
-    // Adiciona informações de uso no request para uso posterior
-    (req as any).usageData = usageData;
-
-    next();
-  } catch (error) {
-    if (error instanceof AppError) {
-      throw error;
-    }
-    logger.error(`checkPlanLimits middleware error: ${(error as Error).message}`);
-    next(error);
-  }
-}
-
-/**
- * Middleware opcional que apenas adiciona dados de uso ao request sem bloquear
- * Útil para rotas que apenas precisam exibir informações de uso
- */
-export async function attachUsageData(
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
-  try {
-    if (!req.user || !req.user.tenantId) {
-      return next();
-    }
-
-    const usageData = await UsageTracker.getUsage(req.user.tenantId);
-    (req as any).usageData = usageData;
-
-    next();
-  } catch (error) {
-    logger.error(`attachUsageData middleware error: ${(error as Error).message}`);
-    // Não bloqueia a requisição se houver erro ao obter dados de uso
-    next();
-  }
 }

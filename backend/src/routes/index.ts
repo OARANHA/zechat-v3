@@ -31,6 +31,8 @@ import tenantPlanRoutes from './tenantPlanRoutes';
 import erpIntegrationRoutes from './erpIntegrationRoutes';
 import erpWebhookRoutes from './erpWebhookRoutes';
 import subscriptionRoutes from './subscriptionRoutes';
+import adminBillingRoutes from './adminBillingRoutes';
+import evolutionWebhookRoutes from './evolutionWebhookRoutes';
 
 const routes = Router();
 
@@ -58,6 +60,7 @@ routes.use('/api/whatsapp-sessions', whatsappSessionRoutes);
 routes.use('/api/whatsapp-webhooks', whatsappWebhookRoutes);
 routes.use('/api/api-config', apiConfigRoutes);
 routes.use('/api/admin', adminRoutes);
+routes.use('/api/admin', adminBillingRoutes);
 routes.use('/api/tenants', tenantRoutes);
 routes.use('/api/statistics', statisticsRoutes);
 routes.use('/api/contact-sync', contactSyncRoutes);
@@ -65,8 +68,15 @@ routes.use('/api/facebook', facebookRoutes);
 routes.use('/api/metrics', metricsRouter);
 routes.use('/api/billing', billingRoutes);
 routes.use('/api/tenant-plan', tenantPlanRoutes);
+
 // ========== WEBHOOKS ==========
 routes.use('/webhook/erp', erpWebhookRoutes);
+// ✅ NOVO: Compatibilidade com gateway WhatsApp que usa /webhook/whatsapp
+routes.use('/webhook/whatsapp', whatsappWebhookRoutes);
+// Alias compatível para cenários que chamam /api/webhook/whatsapp
+routes.use('/api/webhook/whatsapp', whatsappWebhookRoutes);
+// ✅ FIX CRÍTICO P0: Registra webhook Evolution API - sem isso, QR code não funciona
+routes.use('/api/webhook/evolution', evolutionWebhookRoutes);
 
 // ========== INTEGRAÇÕES E ASSINATURAS ==========
 routes.use('/api/integrations/erp', erpIntegrationRoutes);

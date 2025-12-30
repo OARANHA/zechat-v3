@@ -42,6 +42,12 @@ const routes = [
         meta: { requiresAuth: true, requiresAdmin: true }
       },
       {
+        path: '/billing/tenant',
+        name: 'tenant-billing',
+        component: () => import('pages/billing/TenantBilling.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: '/chat-flow',
         component: () => import('pages/chatFlow/Index.vue'),
         redirect: 'chat-flow',

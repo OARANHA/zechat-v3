@@ -1,140 +1,97 @@
 import {
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   Model,
-  PrimaryKey,
-  AutoIncrement,
   DataType,
-  Default,
   ForeignKey,
   BelongsTo,
-  AllowNull,
-  Index,
-  Scopes
-} from "sequelize-typescript";
-import Role from "./Role";
-import Permission from "./Permission";
-import Tenant from "./Tenant";
-import User from "./User";
+} from 'sequelize-typescript';
+import Role from './Role';
+import Permission from './Permission';
+import Tenant from './Tenant';
 
-/**
- * RolePermission Model
- * Tabela de junção entre Roles e Permissions
- * Representa atribuição de permissões a roles
- */
-@Scopes(() => ({
-  byRole: (roleId: number) => ({
-    where: { roleId }
-  }),
-  byPermission: (permissionId: number) => ({
-    where: { permissionId }
-  }),
-  byTenant: (tenantId: number) => ({
-    where: { tenantId }
-  }),
-  withRole: {
-    include: [Role]
-  },
-  withPermission: {
-    include: [Permission]
-  },
-  withTenant: {
-    include: [Tenant]
-  },
-  active: {
-    where: {
-      expiresAt: null
-    }
-  },
-  expired: {
-    where: {
-      expiresAt: {
-        $not: null,
-        $lt: new Date()
-      }
-    }
-  }
-}))
 @Table({
   tableName: 'RolePermissions',
-  timestamps: true,
-  underscored: true,
-  paranoid: false,
-  indexes: [
-    { fields: ['roleId'] },
-    { fields: ['permissionId'] },
-    { fields: ['tenantId'] },
-    { fields: ['roleId', 'tenantId'] },
-    { fields: ['permissionId', 'tenantId'] },
-    { fields: ['expiresAt'] }
-  ]
+  underscored: false,
+  timestamps: false,
 })
-class RolePermission extends Model<RolePermission> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
+export default class RolePermission extends Model<RolePermission> {
+  @Column({
+    type: DataType.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  })
   id!: number;
 
   @ForeignKey(() => Role)
-  @Column(DataType.INTEGER)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'roleId',
+    allowNull: false,
+  })
   roleId!: number;
 
-  @BelongsTo(() => Role)
-  role!: Role;
-
   @ForeignKey(() => Permission)
-  @Column(DataType.INTEGER)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'permissionId',
+    allowNull: false,
+  })
   permissionId!: number;
 
-  @BelongsTo(() => Permission)
-  permission!: Permission;
-
   @ForeignKey(() => Tenant)
-  @Column(DataType.INTEGER)
+  @Column({
+    type: DataType.INTEGER,
+    field: 'tenantId',
+    allowNull: false,
+  })
   tenantId!: number;
 
-  @BelongsTo(() => Tenant)
-  tenant!: Tenant;
+  @Column({
+    type: DataType.INTEGER,
+    field: 'assignedBy',
+    allowNull: true,
+  })
+  assignedBy?: number;
 
-  @ForeignKey(() => User)
-  @AllowNull(true)
-  @Column(DataType.INTEGER)
-  assignedBy?: number | null;
-
-  @BelongsTo(() => User, 'assignedBy')
-  assignedByUser?: User | null;
-
-  @Default(() => new Date())
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+    field: 'grantedAt',
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   grantedAt!: Date;
 
-  @AllowNull(true)
-  @Column(DataType.DATE)
-  expiresAt?: Date | null;
+  @Column({
+    type: DataType.DATE,
+    field: 'expiresAt',
+    allowNull: true,
+  })
+  expiresAt?: Date;
 
-  @CreatedAt
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+    field: 'createdAt',
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   createdAt!: Date;
 
-  @UpdatedAt
-  @Column(DataType.DATE)
+  @Column({
+    type: DataType.DATE,
+    field: 'updatedAt',
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   updatedAt!: Date;
 
-  /**
-   * Getter: Permissão está expirada?
-   */
-  get isExpired(): boolean {
-    return this.expiresAt ? this.expiresAt < new Date() : false;
-  }
+  // Associations
+  @BelongsTo(() => Role, 'roleId')
+  role!: Role;
 
-  /**
-   * Getter: Permissão está ativa (não expirada)?
-   */
-  get isActive(): boolean {
-    return !this.isExpired;
-  }
+  @BelongsTo(() => Permission, 'permissionId')
+  permission!: Permission;
+
+  @BelongsTo(() => Tenant, 'tenantId')
+  tenant!: Tenant;
 }
-
-export default RolePermission;

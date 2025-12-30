@@ -52,10 +52,32 @@ export const updateBusinessHours = async (
 ): Promise<Response> => {
   try {
     const { tenantId } = req.params;
-    const { businessHours } = req.body;
 
-    if (!businessHours || !Array.isArray(businessHours)) {
-      throw new AppError("Horários de atendimento são obrigatórios e devem ser um array");
+    // Aceita múltiplos formatos de payload
+    // { businessHours: Day[] } | Day[] | { data: { businessHours: Day[] } }
+    let businessHours: any = (req.body as any)?.businessHours
+      || (req.body as any)?.data?.businessHours
+      || req.body;
+
+    if (!Array.isArray(businessHours)) {
+      return res.status(400).json({
+        message: 'Erro de validação',
+        errors: ['Formato de payload inválido: esperado array de businessHours.']
+      });
+    }
+
+    // Validação por item
+    const errors: string[] = [];
+    businessHours.forEach((d: any, idx: number) => {
+      if (typeof d.day === 'undefined') errors.push(`Dia[${idx}]: campo 'day' é obrigatório`);
+      if (!d?.label) errors.push(`Dia[${idx}]: campo 'label' é obrigatório`);
+      if (!d?.type) errors.push(`Dia[${idx}]: campo 'type' é obrigatório`);
+      ['hr1','hr2','hr3','hr4'].forEach(h => {
+        if (typeof d?.[h] === 'undefined') errors.push(`Dia[${idx}]: campo '${h}' é obrigatório`);
+      });
+    });
+    if (errors.length) {
+      return res.status(400).json({ message: 'Erro de validação', errors });
     }
 
     // Verificar se o usuário tem permissão para acessar este tenant
@@ -76,8 +98,15 @@ export const updateBusinessHours = async (
     });
   } catch (error) {
     logger.error(`Erro ao atualizar horários de atendimento: ${error}`);
-    return res.status(error.statusCode || 500).json({
-      error: error.message || "Erro ao atualizar horários de atendimento"
+    logger.error('Detalhes do erro (updateBusinessHours):', {
+      message: (error as any)?.message,
+      stack: (error as any)?.stack,
+      params: req.params,
+      body: req.body
+    });
+    return res.status((error as any)?.statusCode || 500).json({
+      message: 'Erro ao atualizar horários de atendimento',
+      errors: [(error as any)?.message || 'Erro interno']
     });
   }
 };
